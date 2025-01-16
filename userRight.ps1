@@ -68,7 +68,7 @@ function securitypolicy {
 
 					if ($usedSID -contains $ele){
 						#this group has been processed before
-						$existingEntry = $final|Where-Object {$_.SamAccountName -eq $grp_.SamAccountName}
+						$existingEntry = $final|Where-Object {$_.SamAccountName -eq $grp.SamAccountName}
 						
 						$existingEntry.userRight.add($poname) |Out-Null}
 					
