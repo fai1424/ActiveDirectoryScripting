@@ -1,6 +1,8 @@
 function getUserRights {
 	$final = @()
 	$usedElement = [System.Collections.Generic.HashSet[string]]@() #defined a set to make the element unique
+	$filteredRight = @() #in case if we want to filter away some right
+
 
 	# export security setting
 	secedit /export /cfg securitysetting.txt
@@ -21,6 +23,7 @@ function getUserRights {
 		else{
 			break #It exceeds the [rights] section, just end the loop
 		}
+		if ($filteredRight -contains $poname){break}
 		# second loop: handling each element of the Rights
 		foreach ($ele in $loop){
 				if( $ele[0] -eq "*"){
