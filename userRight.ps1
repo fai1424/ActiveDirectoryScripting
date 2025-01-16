@@ -119,10 +119,11 @@ function securitypolicy {
 		}	
 
 	
-	#turn memberof and userRight from list/set to string for export
+	#turn memberof and userRight and source_of_right from list/set to string for export
     foreach ($f in $final){
 		$f.memberof = $f.memberof | Out-String
 		$f.userRight = $f.userRight | Out-String
+		$f.source_of_right = $f.source_of_right | Out-String
 	}
 
 	#export and cleanup
