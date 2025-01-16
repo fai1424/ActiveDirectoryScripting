@@ -1,10 +1,10 @@
-function securitypolicy {
+function getUserRights {
 	$final = @()
-	$usedSID = [System.Collections.Generic.HashSet[string]]@() #defined a set to make the element unique
+	$usedElement = [System.Collections.Generic.HashSet[string]]@() #defined a set to make the element unique
 
-	# export security policy
-	secedit /export /cfg securitypolicy.txt
-	$file = Get-Content securitypolicy.txt
+	# export security setting
+	secedit /export /cfg securitysetting.txt
+	$file = Get-Content securitysetting.txt
 
 	# extract privilege rights section
 	$policy = $file[([array]::IndexOf($file,"[Privilege Rights]")-$file.Count+1)..-1]
@@ -57,7 +57,7 @@ function securitypolicy {
 							source_of_right = [Collections.Generic.HashSet[string]]@("self")
 						}
 					}
-					$usedSID.add($ele) | Out-Null	
+					$usedElement.add($ele) | Out-Null	
 					continue
 				}
 
@@ -66,7 +66,7 @@ function securitypolicy {
 
 				if ($grp){ #this element is a group
 
-					if ($usedSID -contains $ele){
+					if ($usedElement -contains $ele){
 						#this group has been processed before
 						$existingEntry = $final|Where-Object {$_.SamAccountName -eq $grp.SamAccountName}
 						
@@ -113,7 +113,7 @@ function securitypolicy {
 						
 					}
 
-					$usedSID.add($ele) | Out-Null
+					$usedElement.add($ele) | Out-Null
 				}
 		}
 		}	
@@ -129,9 +129,9 @@ function securitypolicy {
 	#export and cleanup
 	$output = "PrivilegedUserAccounts.csv"
 	$final | Export-Csv -Path $output -NoTypeInformation -Encoding UTF8
-	rm ".\securitypolicy.txt"
+	rm ".\securitysetting.txt"
 	return $final
 }
 
 
-securitypolicy | Out-Null
+getUserRights | Out-Null
