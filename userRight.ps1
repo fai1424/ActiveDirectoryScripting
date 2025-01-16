@@ -1,0 +1,136 @@
+function securitypolicy {
+	$final = @()
+	$usedSID = [System.Collections.Generic.HashSet[string]]@() #defined a set to make the element unique
+
+	# export security policy
+	secedit /export /cfg securitypolicy.txt
+	$file = Get-Content securitypolicy.txt
+
+	# extract privilege rights section
+	$policy = $file[([array]::IndexOf($file,"[Privilege Rights]")-$file.Count+1)..-1]
+
+	# first loop: handling Rights
+	foreach ($po in $policy){
+
+		# extract the privilege name and corresponding list of SIDs
+		#depends on the security policy format, [privilege rights] might not be the last part
+		if ($po -match "="){
+			$poname = ($po -split ' = ')[0]
+			$loop = (($po -split ' = ')[1]) -split ','
+		}
+		else{
+			break #It exceeds the [rights] section, just end the loop
+		}
+		# second loop: handling each element of the Rights
+		foreach ($ele in $loop){
+				if( $ele[0] -eq "*"){
+					#it is a SID
+					$user = Get-ADUser -Filter "SID -like '$($ele.Substring(1))'" -Properties Enabled,LastLogonDate,MemberOf
+					$grp = (Get-ADGroup -Filter "SID -like '$($ele.SubString(1))'" -Properties MemberOf)
+				
+				}
+				else{
+					#not a SID, seems like custom editing on local group policy editor will append SamAccountName instead of the SID
+					$user = Get-ADUser -Filter "SamAccountName -like '$ele'" -Properties Enabled,LastLogonDate,MemberOf
+					$grp = (Get-ADGroup -Filter "SamAccountName -like '$ele'" -Properties MemberOf)
+
+				}
+
+				if ($user){ #this element is a user
+					$existingEntry = $final|Where-Object {$_.SamAccountName -eq $user.SamAccountName}
+					if($existingEntry){
+						#this user has been fetched out before
+						$existingEntry.userRight.add($poname) |Out-Null
+						$existingEntry.source_of_right.add("self") | Out-Null
+					
+					}
+					else{
+						#new user
+						$final += [PSCustomObject]@{
+							name = $user.name
+							SamAccountName = $user.SamAccountName
+							objectClass = $user.ObjectClass
+							memberof =   $user.MemberOf | Get-ADGroup | Select-Object Name|Format-Table -HideTableHeaders
+							userRight = [Collections.Generic.HashSet[string]]@($poname)
+							lastLogonDate = if ($user.LastLogonDate) {$user.LastLogonDate} else {"Never"}
+							AccountStatue = if ($user.Enabled) { If ($user.Enabled -eq 'True') {'Active'} else {'Disabled'}} else {"NA"}
+							source_of_right = [Collections.Generic.HashSet[string]]@("self")
+						}
+					}
+					$usedSID.add($ele) | Out-Null	
+					continue
+				}
+
+
+				
+
+				if ($grp){ #this element is a group
+
+					if ($usedSID -contains $ele){
+						#this group has been processed before
+						$existingEntry = $final|Where-Object {$_.SamAccountName -eq $grp_.SamAccountName}
+						
+						$existingEntry.userRight.add($poname) |Out-Null}
+					
+					else{
+						#new group
+						$final += [PSCustomObject]@{
+							name = $grp.Name
+							SamAccountName = $grp.SamAccountName
+							objectClass = $grp.ObjectClass
+							memberof =   if($grp.MemberOf) {$grp.MemberOf | Get-ADGroup | Select-Object Name |Format-Table -HideTableHeaders} else {""}
+							userRight = [Collections.Generic.HashSet[string]]@($poname)
+							lastLogonDate = "NA"
+							AccountStatue = "NA"
+							source_of_right = [Collections.Generic.HashSet[string]]@("self")
+						}
+					}
+
+					#get all the users having the right of this group
+					$members = (Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Recursive ) |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate
+					#third loop: to process the member of the group
+					foreach ($member in $members){
+						$existingEntry = $final|Where-Object {$_.SamAccountName -eq $member.SamAccountName}
+						if($existingEntry){
+							#this user has been processed before
+							$existingEntry.userRight.add($poname) |Out-Null
+							$existingEntry.source_of_right.add($grp.Name) | Out-Null}
+
+						else{
+							#new new user
+							#get the user last login and interactive login and the status.
+							$final += [PSCustomObject]@{
+								name = $member.name
+								SamAccountName = $member.SamAccountName
+								objectClass = $member.ObjectClass
+								memberof =  $member.MemberOf | Get-ADGroup | Select-Object Name |Format-Table -HideTableHeaders
+								userRight = [Collections.Generic.HashSet[string]]@($poname)
+								lastLogonDate = if ($member.LastLogonDate) {$member.LastLogonDate} else {"Never"}
+								AccountStatue = if ($member.Enabled) { If ($member.Enabled -eq 'True') {'Active'} else {'Disabled'}} else {"NA"}
+								source_of_right = [Collections.Generic.HashSet[string]]@($grp.Name)
+							}
+						}
+						
+					}
+
+					$usedSID.add($ele) | Out-Null
+				}
+		}
+		}	
+
+	
+	#turn memberof and userRight from list/set to string for export
+    foreach ($f in $final){
+		$f.memberof = $f.memberof | Out-String
+		$f.userRight = $f.userRight | Out-String
+	}
+
+	#export and cleanup
+	$output = "PrivilegedUserAccounts.csv"
+	$final | Export-Csv -Path $output -NoTypeInformation -Encoding UTF8
+	rm ".\securitypolicy.txt"
+	return $final
+}
+
+
+securitypolicy | Out-Null
