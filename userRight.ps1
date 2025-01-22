@@ -29,7 +29,7 @@ function getUserRights {
 			#depends on the security policy format, [privilege rights] might not be the last part
 			if ($po -match "="){
 				$poname = ($po -split ' = ')[0]
-				$loop = (($po -split ' = ')[1]) -split ','not
+				$loop = (($po -split ' = ')[1]) -split ','
 			}
 			else{
 				break #It exceeds the [rights] section, just end the loop
