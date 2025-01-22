@@ -132,7 +132,7 @@ function getUserRights {
 
 	#export and cleanup
 
-	$output = "PrivilegedUserAccounts_local.csv"
+	$output = "PrivilegedUserAccounts.csv"
 	$final | Export-Csv -Path $output -NoTypeInformation -Encoding UTF8
 	rm ".\securitysetting.txt"
 
