@@ -20,9 +20,9 @@ function getUserRights {
 		# extract the privilege name and corresponding list of SIDs
 		#depends on the security policy format, [privilege rights] might not be the last part
 		if ($po -match "="){
-			$grouping = ($po -split '=').trim()
-			$poname = $grouping[0]
-			$loop = $grouping -split ','
+			$grouping = ($po -split '=')
+			$poname = $grouping[0].trim()
+			$loop = ($grouping[1] -split ',').trim()
 
 		}
 		else{
