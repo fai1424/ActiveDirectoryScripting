@@ -9,7 +9,6 @@ function getUserRights {
 	# export security setting
 	secedit /export /mergedpolicy /cfg securitysetting.txt
 	$file = Get-Content securitysetting.txt			
-	$file = Get-Content sec.txt
 	
 
 	# extract privilege rights section
@@ -21,30 +20,27 @@ function getUserRights {
 		# extract the privilege name and corresponding list of SIDs
 		#depends on the security policy format, [privilege rights] might not be the last part
 		if ($po -match "="){
-			$grouping = ($po -split '=')
-			$poname = $grouping[0]
-			$loop = ($grouping[1] -split ',')
+			$poname = ($po -split ' = ')[0]
+			$loop = (($po -split ' = ')[1]) -split ','
 		}
 		else{
-			Write-Host "Directly end lol"
-			continue #It exceeds the [rights] section, just end the loop
+			if ($po.trim()){break}
+			else{continue}
+			 #It exceeds the [rights] section, just end the loop
 		}
 		if ($filteredRight -contains $poname){break}
 		# second loop: handling each element of the Rights
 		foreach ($ele in $loop){
-				if( $ele -match "\*"){
+				if( $ele[0] -eq "*"){
 					#it is a SID
 					$user = Get-ADUser -Filter "SID -like '$($ele.Substring(1))'" -Properties Enabled,LastLogonDate,MemberOf
 					$grp = (Get-ADGroup -Filter "SID -like '$($ele.SubString(1))'" -Properties MemberOf)
+				
 				}
 				else{
-					
 					#not a SID, seems like custom editing on local group policy editor will append SamAccountName instead of the SID
-					try{
-						$user = Get-ADUser -Filter "SamAccountName -like '$ele'" -Properties Enabled,LastLogonDate,MemberOf
-						$grp = (Get-ADGroup -Filter "SamAccountName -like '$ele'" -Properties MemberOf)
-					}
-					catch{continue} #an error
+					$user = Get-ADUser -Filter "SamAccountName -like '$ele'" -Properties Enabled,LastLogonDate,MemberOf
+					$grp = (Get-ADGroup -Filter "SamAccountName -like '$ele'" -Properties MemberOf)
 
 				}
 
@@ -81,7 +77,7 @@ function getUserRights {
 					if ($usedElement -contains $ele){
 						#this group has been processed before
 						$existingEntry = $final|Where-Object {$_.SamAccountName -eq $grp.SamAccountName}
-
+						
 						$existingEntry.userRight.add($poname) |Out-Null}
 					
 					else{
@@ -140,10 +136,10 @@ function getUserRights {
 
 	$output = "PrivilegedUserAccounts.csv"
 	$final | Export-Csv -Path $output -NoTypeInformation -Encoding UTF8
-	#rm ".\securitysetting.txt"
+	rm ".\securitysetting.txt"
 
 	return $final
 }
 
 
-getUserRights
+getUserRights | Out-Null
