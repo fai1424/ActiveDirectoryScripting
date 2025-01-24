@@ -9,6 +9,7 @@ function getUserRights {
 	# export security setting
 	secedit /export /mergedpolicy /cfg securitysetting.txt
 	$file = Get-Content securitysetting.txt			
+	$file = Get-Content sec.txt
 	
 
 	# extract privilege rights section
@@ -21,12 +22,12 @@ function getUserRights {
 		#depends on the security policy format, [privilege rights] might not be the last part
 		if ($po -match "="){
 			$grouping = ($po -split '=')
-			$poname = $grouping[0].trim()
+			$poname = $grouping[0]
 			$loop = ($grouping[1] -split ',')
-			Write-Host $poname.gettype()
 		}
 		else{
-			break #It exceeds the [rights] section, just end the loop
+			Write-Host "Directly end lol"
+			continue #It exceeds the [rights] section, just end the loop
 		}
 		if ($filteredRight -contains $poname){break}
 		# second loop: handling each element of the Rights
@@ -80,7 +81,7 @@ function getUserRights {
 					if ($usedElement -contains $ele){
 						#this group has been processed before
 						$existingEntry = $final|Where-Object {$_.SamAccountName -eq $grp.SamAccountName}
-						
+
 						$existingEntry.userRight.add($poname) |Out-Null}
 					
 					else{
@@ -139,7 +140,7 @@ function getUserRights {
 
 	$output = "PrivilegedUserAccounts.csv"
 	$final | Export-Csv -Path $output -NoTypeInformation -Encoding UTF8
-	rm ".\securitysetting.txt"
+	#rm ".\securitysetting.txt"
 
 	return $final
 }
