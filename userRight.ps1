@@ -20,10 +20,10 @@ function getUserRights {
 		# extract the privilege name and corresponding list of SIDs
 		#depends on the security policy format, [privilege rights] might not be the last part
 		if ($po -match "="){
-			$poname = ($po -split ' = ')[0]
-			$loop = (($po -split ' = ')[1]) -split ','
-			#confirm valid right
-			if ($poname[0] -ne "S" -or $poname[1] -ne "e") {continue}
+			$grouping = ($po -split '=').trim()
+			$poname = $grouping[0]
+			$loop = $grouping -split ','
+
 		}
 		else{
 			break #It exceeds the [rights] section, just end the loop
@@ -35,13 +35,15 @@ function getUserRights {
 					#it is a SID
 					$user = Get-ADUser -Filter "SID -like '$($ele.Substring(1))'" -Properties Enabled,LastLogonDate,MemberOf
 					$grp = (Get-ADGroup -Filter "SID -like '$($ele.SubString(1))'" -Properties MemberOf)
-				
 				}
 				else{
-					if ($ele -eq "") {continue}
+					
 					#not a SID, seems like custom editing on local group policy editor will append SamAccountName instead of the SID
-					$user = Get-ADUser -Filter "SamAccountName -like '$ele'" -Properties Enabled,LastLogonDate,MemberOf
-					$grp = (Get-ADGroup -Filter "SamAccountName -like '$ele'" -Properties MemberOf)
+					try{
+						$user = Get-ADUser -Filter "SamAccountName -like '$ele'" -Properties Enabled,LastLogonDate,MemberOf
+						$grp = (Get-ADGroup -Filter "SamAccountName -like '$ele'" -Properties MemberOf)
+					}
+					catch{continue} #an error
 
 				}
 
