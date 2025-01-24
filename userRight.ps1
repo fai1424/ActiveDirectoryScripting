@@ -22,8 +22,8 @@ function getUserRights {
 		if ($po -match "="){
 			$grouping = ($po -split '=')
 			$poname = $grouping[0].trim()
-			$loop = ($grouping[1] -split ',').trim()
-
+			$loop = ($grouping[1] -split ',')
+			Write-Host $poname.gettype()
 		}
 		else{
 			break #It exceeds the [rights] section, just end the loop
@@ -31,7 +31,7 @@ function getUserRights {
 		if ($filteredRight -contains $poname){break}
 		# second loop: handling each element of the Rights
 		foreach ($ele in $loop){
-				if( $ele[0] -eq "*"){
+				if( $ele -match "\*"){
 					#it is a SID
 					$user = Get-ADUser -Filter "SID -like '$($ele.Substring(1))'" -Properties Enabled,LastLogonDate,MemberOf
 					$grp = (Get-ADGroup -Filter "SID -like '$($ele.SubString(1))'" -Properties MemberOf)
@@ -145,4 +145,4 @@ function getUserRights {
 }
 
 
-getUserRights | Out-Null
+getUserRights

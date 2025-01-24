@@ -2,25 +2,6 @@
 "Administrators","Administrators","group","
 ","sebackupprivilege
 sebatchlogonright
-sechangenotifyprivilege
-secreatepagefileprivilege
-sedebugprivilege
-seenabledelegationprivilege
-seincreasebasepriorityprivilege
-seincreasequotaprivilege
-seinteractivelogonright
-seloaddriverprivilege
-senetworklogonright
-seprofilesingleprocessprivilege
-seremoteshutdownprivilege
-serestoreprivilege
-sesecurityprivilege
-seshutdownprivilege
-sesystemenvironmentprivilege
-sesystemprofileprivilege
-sesystemtimeprivilege
-setakeownershipprivilege
-seundockprivilege
 ","NA","NA","self
 "
 "Administrator","Administrator","user","
@@ -94,7 +75,6 @@ Print Operators
 
 
 ","sebackupprivilege
-sedelegatesessionuserimpersonateprivilege
 ","NA","NA","self
 "
 "Server Operators","Server Operators","group","
@@ -114,9 +94,21 @@ sesystemtimeprivilege
 ","sebatchlogonright
 ","NA","NA","self
 "
+"Administrators","Administrators","group","
+","sechangenotifyprivilege
+","NA","NA","self
+"
 "Pre-Windows 2000 Compatible Access","Pre-Windows 2000 Compatible Access","group","
 ","sechangenotifyprivilege
 senetworklogonright
+","NA","NA","self
+"
+"testgroup","testgroup","group","
+Backup Operators
+Print Operators 
+
+
+","sedelegatesessionuserimpersonateprivilege
 ","NA","NA","self
 "
 "Account Operators","Account Operators","group","
