@@ -24,7 +24,9 @@ function getUserRights {
 			$loop = (($po -split ' = ')[1]) -split ','
 		}
 		else{
-			break #It exceeds the [rights] section, just end the loop
+			if ($po.trim()){break}
+			else{continue}
+			 #It exceeds the [rights] section, just end the loop
 		}
 		if ($filteredRight -contains $poname){break}
 		# second loop: handling each element of the Rights
