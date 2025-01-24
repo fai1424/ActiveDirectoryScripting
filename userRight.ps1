@@ -8,7 +8,7 @@ function getUserRights {
 
 	# export security setting
 	secedit /export /mergedpolicy /cfg securitysetting.txt
-	$file = Get-Content securitysetting.txt			
+	$file = Get-Content securitysetting.txt		
 	
 
 	# extract privilege rights section
@@ -21,6 +21,7 @@ function getUserRights {
 		#depends on the security policy format, [privilege rights] might not be the last part
 		if ($po -match "="){
 			$poname = ($po -split ' = ')[0]
+			if($poname[0] -ne 's' -or $poname[1] -ne 'e'){break}
 			$loop = (($po -split ' = ')[1]) -split ','
 		}
 		else{
