@@ -22,6 +22,8 @@ function getUserRights {
 		if ($po -match "="){
 			$poname = ($po -split ' = ')[0]
 			$loop = (($po -split ' = ')[1]) -split ','
+			#confirm valid right
+			if ($poname[0] -ne "S" -or $poname[1] -ne "e") {continue}
 		}
 		else{
 			break #It exceeds the [rights] section, just end the loop
@@ -36,6 +38,7 @@ function getUserRights {
 				
 				}
 				else{
+					if ($ele -eq "") {continue}
 					#not a SID, seems like custom editing on local group policy editor will append SamAccountName instead of the SID
 					$user = Get-ADUser -Filter "SamAccountName -like '$ele'" -Properties Enabled,LastLogonDate,MemberOf
 					$grp = (Get-ADGroup -Filter "SamAccountName -like '$ele'" -Properties MemberOf)
