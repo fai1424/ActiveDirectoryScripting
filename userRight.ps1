@@ -8,7 +8,8 @@ function getUserRights {
 
 	# export security setting
 	secedit /export /mergedpolicy /cfg securitysetting.txt
-	$file = Get-Content securitysetting.txt		
+	# $file = Get-Content securitysetting.txt		
+	$file = Get-Content sec.txt
 	
 
 	# extract privilege rights section
@@ -19,6 +20,7 @@ function getUserRights {
 
 		# extract the privilege name and corresponding list of SIDs
 		#depends on the security policy format, [privilege rights] might not be the last part
+		Write-Host $po
 		if ($po -match "="){
 			$poname = ($po -split ' = ')[0]
 			if($poname[0] -ne 's' -or $poname[1] -ne 'e'){break}
@@ -137,7 +139,7 @@ function getUserRights {
 
 	$output = "PrivilegedUserAccounts.csv"
 	$final | Export-Csv -Path $output -NoTypeInformation -Encoding UTF8
-	rm ".\securitysetting.txt"
+	# rm ".\securitysetting.txt"
 
 	return $final
 }

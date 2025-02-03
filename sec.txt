@@ -234,8 +234,6 @@ MACHINE\System\CurrentControlSet\Services\NTDS\Parameters\LdapEnforceChannelBind
 
 MACHINE\System\CurrentControlSet\Services\NTDS\Parameters\LDAPServerIntegrity=4,1
 
-[Privilege Rights]
-
 SeNetworkLogonRight = *S-1-1-0,*S-1-5-11,*S-1-5-32-544,*S-1-5-32-554,*S-1-5-9
 
 SeMachineAccountPrivilege = Join_Computer,*S-1-5-32-544

@@ -8,7 +8,7 @@ function getUserRights {
 
 	# export security setting
 	secedit /export /mergedpolicy /cfg securitysetting.txt
-	$file = Get-Content securitysetting.txt		
+	$file = Get-Content sec.txt		
 	
 
 	# extract privilege rights section
@@ -17,18 +17,18 @@ function getUserRights {
 	# this version is made in case of there is no [Privilege Rights] in the file, but still have privileged defined.
 
 	# first loop: handling Rights
-	foreach ($po in $policy){
-
+	foreach ($po in $file){
 		# extract the privilege name and corresponding list of SIDs
 		#depends on the security policy format, [privilege rights] might not be the last part
 		if ($po -match "="){
 			$poname = ($po -split ' = ')[0]
 			if($poname[0] -ne 's' -or $poname[1] -ne 'e'){continue}
+			# if it is not related to privilege, just go next line
 			$loop = (($po -split ' = ')[1]) -split ','
 		}
 		else{
 			continue
-			 #It exceeds the [rights] section, just end the loop
+			#continue for next line, until file end
 		}
 		
 		if ($filteredRight -contains $poname){break}
