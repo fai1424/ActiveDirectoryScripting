@@ -8,7 +8,7 @@ function getUserRights {
 
 	# export security setting
 	secedit /export /mergedpolicy /cfg securitysetting.txt
-	$file = Get-Content sec.txt		
+	$file = Get-Content securitysetting.txt		
 	
 
 	# extract privilege rights section
@@ -30,7 +30,7 @@ function getUserRights {
 			continue
 			#continue for next line, until file end
 		}
-		
+
 		if ($filteredRight -contains $poname){break}
 		# second loop: handling each element of the Rights
 		foreach ($ele in $loop){
