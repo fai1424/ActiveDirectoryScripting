@@ -4,7 +4,7 @@ function getUserRights {
 	$final = @()
 	$usedElement = [System.Collections.Generic.HashSet[string]]@() #defined a set to make the element unique
 	$filteredRight = @() #in case if we want to filter away some right
-
+	Write-Host "There are total of $((Get-ADUser -filter *).count+(Get-ADGroup -filter *).count) users and groups"
 
 	# export security setting
 	secedit /export /mergedpolicy /cfg securitysetting.txt
@@ -102,7 +102,7 @@ function getUserRights {
 					try{$members = (Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Recursive ) |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate}
 					catch{
 						$members = (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate}
-					}
+					
 					#third loop: to process the member of the group
 					foreach ($member in $members){
 						$existingEntry = $final|Where-Object {$_.SamAccountName -eq $member.SamAccountName}
@@ -138,6 +138,7 @@ function getUserRights {
 		$f.userRight = $f.userRight | Out-String
 		$f.source_of_right = $f.source_of_right | Out-String
 	}
+	Write-Host "Among them, there are $($final.count) privileged users and groups"
 
 	#export and cleanup
 
