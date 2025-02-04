@@ -99,7 +99,10 @@ function getUserRights {
 					}
 
 					#get all the users having the right of this group
-					$members = (Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Recursive ) |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate
+					try{$members = (Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Recursive ) |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate}
+					catch{
+						$members = (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate}
+					}
 					#third loop: to process the member of the group
 					foreach ($member in $members){
 						$existingEntry = $final|Where-Object {$_.SamAccountName -eq $member.SamAccountName}
