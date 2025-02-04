@@ -25,6 +25,7 @@ function getUserRights {
 			if($poname[0] -ne 's' -or $poname[1] -ne 'e'){continue}
 			# if it is not related to privilege, just go next line
 			$loop = (($po -split ' = ')[1]) -split ','
+			if (-not $loop) {continue}
 		}
 		else{
 			continue
