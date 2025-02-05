@@ -50,9 +50,9 @@ function getUserRights {
 
 				}
 
-				if (-not $user -and -not $grp){
-					Write-Host "$ele does not appear as a user or a grp maybe it is a services or computers"
-				}
+				# if (-not $user -and -not $grp){
+				# 	Write-Host "$ele does not appear as a user or a grp maybe it is a services or computers"
+				# }
 
 				if ($user){ #this element is a user
 					$existingEntry = $final|Where-Object {$_.SamAccountName -eq $user.SamAccountName}
@@ -83,11 +83,9 @@ function getUserRights {
 				
 
 				if ($grp){ #this element is a group
-
-					if ($usedElement -contains $ele){
+					$existingEntry = $final|Where-Object {$_.SamAccountName -eq $grp.SamAccountName}
+					if ($existingEntry){
 						#this group has been processed before
-						$existingEntry = $final|Where-Object {$_.SamAccountName -eq $grp.SamAccountName}
-						
 						$existingEntry.userRight.add($poname) |Out-Null}
 					
 					else{
