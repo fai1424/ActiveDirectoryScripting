@@ -171,7 +171,7 @@ function getUserRights {
 		$f.userRight = $f.userRight | Out-String
 		$f.source_of_right = $f.source_of_right | Out-String
 	}
-	Write-Host "Among them, there are $($final.count) privileged users and groups"
+	Write-Host "Among them, there are $(($final|Where-Object {$_.objectClass -eq "user"}).count) privileged users and $(($final|Where-Object {$_.objectClass -eq "group"}).count) direct privileged groups"
 
 	#export and cleanup
 

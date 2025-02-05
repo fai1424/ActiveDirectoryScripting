@@ -83,6 +83,33 @@ setakeownershipprivilege
 ","Never","Active","Administrators
 Backup Operators
 "
+"test 9","test9","user","
+recur
+
+
+","seundockprivilege
+sebackupprivilege
+sebatchlogonright
+sechangenotifyprivilege
+secreatepagefileprivilege
+sedebugprivilege
+seenabledelegationprivilege
+seincreasebasepriorityprivilege
+seincreasequotaprivilege
+seinteractivelogonright
+seloaddriverprivilege
+senetworklogonright
+seprofilesingleprocessprivilege
+seremoteshutdownprivilege
+serestoreprivilege
+sesecurityprivilege
+seshutdownprivilege
+sesystemenvironmentprivilege
+sesystemprofileprivilege
+sesystemtimeprivilege
+setakeownershipprivilege
+","Never","Active","Administrators
+"
 "test 3","test3","user","
 recur          
 Print Operators
