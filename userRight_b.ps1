@@ -46,7 +46,19 @@ function getUserRights {
 				else{
 					#not a SID, seems like custom editing on local group policy editor will append SamAccountName instead of the SID
 					$user = Get-ADUser -Filter "SamAccountName -like '$ele'" -Properties Enabled,LastLogonDate,MemberOf
+					if (-not $user){
+						$user = Get-ADUser -Filter "CN -like '$ele'" -Properties Enabled,LastLogonDate,MemberOf
+						if (-not $user){
+							$user = Get-ADUser -Filter "Name -like '$ele'" -Properties Enabled,LastLogonDate,MemberOf
+						}
+					}
 					$grp = (Get-ADGroup -Filter "SamAccountName -like '$ele'" -Properties MemberOf)
+					if (-not $grp){
+						$grp = (Get-ADGroup -Filter "CN -like '$ele'" -Properties MemberOf)
+						if (-not $grp){
+							$grp = (Get-ADGroup -Filter "Name -like '$ele'" -Properties MemberOf)
+						}
+					}
 
 				}
 
@@ -158,7 +170,7 @@ function getUserRights {
 
 	$output = "PrivilegedUserAccounts.csv"
 	$final | Export-Csv -Path $output -NoTypeInformation -Encoding UTF8
-	rm ".\securitysetting.txt"
+	# rm ".\securitysetting.txt"
 
 	return $final
 }
