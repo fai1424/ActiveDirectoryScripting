@@ -2,11 +2,11 @@ function getUserRights {
 
 
 	$final = @()
-	$usedElement = [System.Collections.Generic.HashSet[string]]@() #defined a set to make the element unique
-	$filteredRight = @() #in case if we want to filter away some right
-	Write-Host "There are total of $((Get-ADUser -filter *).count+(Get-ADGroup -filter *).count) users and groups"
 
-	# export security setting
+	$filteredRight = @() #in case if we want to filter away some right
+	Write-Host "There are total of $((Get-ADUser -filter *).count) users and $((Get-ADGroup -filter *).count) groups"
+
+	# export security setting 
 	secedit /export /mergedpolicy /cfg securitysetting.txt
 	$file = Get-Content securitysetting.txt		
 	
@@ -44,7 +44,7 @@ function getUserRights {
 				
 				}
 				else{
-					#not a SID, seems like custom editing on local group policy editor will append SamAccountName instead of the SID
+					#not a SID, seems like custom editing on local group policy editor will append SamAccountName/CN/Name instead of the SID
 					$user = Get-ADUser -Filter "SamAccountName -like '$ele'" -Properties Enabled,LastLogonDate,MemberOf
 					if (-not $user){
 						$user = Get-ADUser -Filter "CN -like '$ele'" -Properties Enabled,LastLogonDate,MemberOf
@@ -61,10 +61,6 @@ function getUserRights {
 					}
 
 				}
-
-				# if (-not $user -and -not $grp){
-				# 	Write-Host "$ele does not appear as a user or a grp maybe it is a services or computers"
-				# }
 
 				if ($user){ #this element is a user
 					$existingEntry = $final|Where-Object {$_.SamAccountName -eq $user.SamAccountName}
@@ -87,7 +83,6 @@ function getUserRights {
 							source_of_right = [Collections.Generic.HashSet[string]]@("self")
 						}
 					}
-					$usedElement.add($ele) | Out-Null	
 					continue
 				}
 
@@ -112,7 +107,6 @@ function getUserRights {
 							AccountStatue = "NA"
 							source_of_right = [Collections.Generic.HashSet[string]]@("self")
 						}
-						$usedElement.add($ele) |Out-Null
 					}
 
 					#get all the users having the right of this group
@@ -151,7 +145,7 @@ function getUserRights {
 							$existingEntry.source_of_right.add($grp.Name) | Out-Null}
 
 						else{
-							#new new user
+							#new user
 							#get the user last login and interactive login and the status.
 							$final += [PSCustomObject]@{
 								name = $member.name
