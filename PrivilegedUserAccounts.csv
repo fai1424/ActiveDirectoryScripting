@@ -1,6 +1,7 @@
 ﻿"name","SamAccountName","objectClass","memberof","userRight","lastLogonDate","AccountStatue","source_of_right"
 "Administrators","Administrators","group","
-","sebackupprivilege
+","seundockprivilege
+sebackupprivilege
 sebatchlogonright
 sechangenotifyprivilege
 secreatepagefileprivilege
@@ -20,7 +21,6 @@ sesystemenvironmentprivilege
 sesystemprofileprivilege
 sesystemtimeprivilege
 setakeownershipprivilege
-seundockprivilege
 ","NA","NA","self
 "
 "Administrator","Administrator","user","
@@ -31,7 +31,8 @@ Schema Admins
 Administrators             
 
 
-","sebackupprivilege
+","seundockprivilege
+sebackupprivilege
 sebatchlogonright
 sechangenotifyprivilege
 secreatepagefileprivilege
@@ -51,7 +52,6 @@ sesystemenvironmentprivilege
 sesystemprofileprivilege
 sesystemtimeprivilege
 setakeownershipprivilege
-seundockprivilege
 ","2/2/2025 6:32:08 PM","Active","Administrators
 "
 "test 4","test4","user","
@@ -59,7 +59,8 @@ Domain Admins
 Backup Operators
 
 
-","sebackupprivilege
+","seundockprivilege
+sebackupprivilege
 sebatchlogonright
 sechangenotifyprivilege
 secreatepagefileprivilege
@@ -79,9 +80,37 @@ sesystemenvironmentprivilege
 sesystemprofileprivilege
 sesystemtimeprivilege
 setakeownershipprivilege
-seundockprivilege
 ","Never","Active","Administrators
 Backup Operators
+"
+"test 3","test3","user","
+recur          
+Print Operators
+
+
+","seundockprivilege
+sebackupprivilege
+sebatchlogonright
+sechangenotifyprivilege
+secreatepagefileprivilege
+sedebugprivilege
+seenabledelegationprivilege
+seincreasebasepriorityprivilege
+seincreasequotaprivilege
+seinteractivelogonright
+seloaddriverprivilege
+senetworklogonright
+seprofilesingleprocessprivilege
+seremoteshutdownprivilege
+serestoreprivilege
+sesecurityprivilege
+seshutdownprivilege
+sesystemenvironmentprivilege
+sesystemprofileprivilege
+sesystemtimeprivilege
+setakeownershipprivilege
+","Never","Active","Administrators
+Print Operators
 "
 "Backup Operators","Backup Operators","group","
 ","sebackupprivilege
@@ -146,13 +175,4 @@ senetworklogonright
 seloaddriverprivilege
 seshutdownprivilege
 ","NA","NA","self
-"
-"test 3","test3","user","
-Print Operators
-
-
-","seinteractivelogonright
-seloaddriverprivilege
-seshutdownprivilege
-","Never","Active","Print Operators
 "
