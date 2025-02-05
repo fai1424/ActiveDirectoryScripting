@@ -5,7 +5,6 @@ function getUserRights {
 
 	$filteredRight = @() #in case if we want to filter away some right
 	Write-Host "There are total of $((Get-ADUser -filter *).count) users and $((Get-ADGroup -filter *).count) groups"
-	Write-Host "Sanity check: should have $(((Get-ADGroup -filter "Domain Admins" -Properties Member).Member | Where-Object {$_.objectClass -eq "user"}).count) domain admins"
 
 	# export security setting 
 	secedit /export /mergedpolicy /cfg securitysetting.txt
@@ -132,7 +131,7 @@ function getUserRights {
 						}
 						}
 						catch{
-						Write-Warning "seems like FSP is not able to workaround with this as well, let's flag this group - $(($grp.SamAccountName)) - for further investigation."
+						Write-Warning "seems like FSP is not able to workaround with this as well, let's flag this group for further investigation."
 						}
 					
 					}
