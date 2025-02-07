@@ -5,8 +5,8 @@ function getUserRights {
 
 	$filteredRight = @() #in case if we want to filter away some right
 	Write-Host "There are total of $((Get-ADUser -filter *).count) users and $((Get-ADGroup -filter *).count) groups"
-	Write-Host "Sanity check: should have $(((Get-ADGroup 'Domain Admins' -Properties Member)).Member.count)"
-	Write-Host "Sanity check: should have $(((Get-ADGroup 'Service Group Accounts' -Properties Member)).Member.count)"
+	# Write-Host "Sanity check: should have $(((Get-ADGroup 'Domain Admins' -Properties Member)).Member.count)"
+	# Write-Host "Sanity check: should have $(((Get-ADGroup 'Service Group Accounts' -Properties Member)).Member.count)"
 
 
 	# export security setting 
@@ -75,11 +75,12 @@ function getUserRights {
 					}
 					else{
 						#new user
+						
 						$final += [PSCustomObject]@{
 							name = $user.name
 							SamAccountName = $user.SamAccountName
 							objectClass = $user.ObjectClass
-							memberof =   $user.MemberOf  | ForEach-Object {$_.Split(','[0])} | ForEach-Object {$_.Split('='[1])}
+							memberof =   $user.MemberOf  | ForEach-Object {$_.Split(',')[0]} | ForEach-Object {$_.Split('=')[1]}
 							userRight = [Collections.Generic.HashSet[string]]@($poname)
 							lastLogonDate = if ($user.LastLogonDate) {$user.LastLogonDate} else {"Never"}
 							AccountStatue = if ($user.Enabled) { If ($user.Enabled -eq 'True') {'Active'} else {'Disabled'}} else {"NA"}
@@ -104,7 +105,7 @@ function getUserRights {
 							name = $grp.Name
 							SamAccountName = $grp.SamAccountName
 							objectClass = $grp.ObjectClass
-							memberof =   if($grp.MemberOf) {$grp.MemberOf | ForEach-Object {$_.Split(','[0])} | ForEach-Object {$_.Split('='[1])}} else {""}
+							memberof =   if($grp.MemberOf) {$grp.MemberOf| ForEach-Object {$_.Split(',')[0]} | ForEach-Object {$_.Split('=')[1]}} else {""}
 							userRight = [Collections.Generic.HashSet[string]]@($poname)
 							lastLogonDate = "NA"
 							AccountStatue = "NA"
@@ -155,7 +156,7 @@ function getUserRights {
 								SamAccountName = $member.SamAccountName
 								objectClass = $member.ObjectClass
 								# memberof =  $member.MemberOf | Get-ADGroup | Select-Object Name |Format-Table -HideTableHeaders
-								memberof = $member.MemberOf | ForEach-Object {$_.Split(','[0])} | ForEach-Object {$_.Split('='[1])}
+								memberof = $member.MemberOf| ForEach-Object {$_.Split(',')[0]} | ForEach-Object {$_.Split('=')[1]}
 								userRight = [Collections.Generic.HashSet[string]]@($poname)
 								lastLogonDate = if ($member.LastLogonDate) {$member.LastLogonDate} else {"Never"}
 								AccountStatue = if ($member.Enabled) { If ($member.Enabled -eq 'True') {'Active'} else {'Disabled'}} else {"NA"}
