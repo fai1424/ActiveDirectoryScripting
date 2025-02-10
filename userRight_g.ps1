@@ -124,29 +124,29 @@ function getUserRights {
 					}
 
 					#get all the users having the right of this group
-					try{$members = (Get-ADGroupMember -filter "SamAccountName -like '$($grp.SamAccountName)'" -Recursive  -searchBase $searchbase ) |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate -searchBase $searchbase}
+					try{$members = (Get-ADGroupMember -filter "SamAccountName -like '$($grp.SamAccountName)'" -Recursive  -searchBase $searchbase ) |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate}
 					catch{
 						$members = @()
 						$subgrp = @()
 
 						# Write-Host "$($grp.SamAccountName), this group has removed some user such that Get-ADGroupMember cannot be used, now use Get-ADGroup instead on this SID"
-						# try{
-						$members += (Get-ADGroup -filter "SamAccountName -like '$($grp.SamAccountName)'" -Properties Member -searchBase $searchbase).Member |Get-ADObject -searchBase $searchbase |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate -searchBase $searchbase
-						$subgrp += (Get-ADGroup -filter "SamAccountName -like '$($grp.SamAccountName)'" -Properties Member -searchBase $searchbase).Member |Get-ADObject -searchBase $searchbase |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Properties SamAccountName -searchBase $searchbase
+						try{
+						$members += (Get-ADGroup -filter "SamAccountName -like '$($grp.SamAccountName)'" -Properties Member -searchBase $searchbase).Member |Get-ADObject  |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate
+						$subgrp += (Get-ADGroup -filter "SamAccountName -like '$($grp.SamAccountName)'" -Properties Member -searchBase $searchbase).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Properties SamAccountName
 						
 						while ($subgrp){
 							
 							$tmp = $subgrp
 							$subgrp = @()
 							foreach ($m in $tmp) {
-								$members += (Get-ADGroup -filter "SamAccountName -like '$($m.SamAccountName)'" -Properties Member -searchBase $searchbase).Member |Get-ADObject -searchBase $searchbase |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate -searchBase $searchbase
-								$subgrp += (Get-ADGroup-filter "SamAccountName -like '$($m.SamAccountName)'" -Properties Member -searchBase $searchbase).Member |Get-ADObject -searchBase $searchbase |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Properties SamAccountName	 -searchBase $searchbase						
+								$members += (Get-ADGroup -filter "SamAccountName -like '$($m.SamAccountName)'" -Properties Member -searchBase $searchbase).Member |Get-ADObject|Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate 
+								$subgrp += (Get-ADGroup -filter "SamAccountName -like '$($m.SamAccountName)'" -Properties Member -searchBase $searchbase).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Properties SamAccountName	 
 							}
 						}
-						# }
-						# catch{
+						}
+						catch{
 						Write-Warning "seems like FSP is not able to workaround with this as well, let's flag this group - $(($grp.SamAccountName)) - for further investigation."
-						# }
+						}
 					
 					}
 					
