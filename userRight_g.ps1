@@ -129,7 +129,7 @@ function getUserRights {
 						$subgrp = @()
 
 						# Write-Host "$($grp.SamAccountName), this group has removed some user such that Get-ADGroupMember cannot be used, now use Get-ADGroup instead on this SID"
-						try{
+						# try{
 						$members += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member -searchBase $searchbase).Member |Get-ADObject -searchBase $searchbase |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate -searchBase $searchbase
 						$subgrp += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member -searchBase $searchbase).Member |Get-ADObject -searchBase $searchbase |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Properties SamAccountName -searchBase $searchbase
 						
@@ -142,10 +142,10 @@ function getUserRights {
 								$subgrp += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member -searchBase $searchbase).Member |Get-ADObject -searchBase $searchbase |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Properties SamAccountName	 -searchBase $searchbase						
 							}
 						}
-						}
-						catch{
+						# }
+						# catch{
 						Write-Warning "seems like FSP is not able to workaround with this as well, let's flag this group - $(($grp.SamAccountName)) - for further investigation."
-						}
+						# }
 					
 					}
 					
