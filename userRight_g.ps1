@@ -51,24 +51,24 @@ function getUserRights {
 				$grp = ""
 				if( $ele[0] -eq "*"){
 					#it is a SID
-					$user = Get-ADUser -Filter "SID -like '$($ele.Substring(1))'" -Properties Enabled,LastLogonDate,MemberOf
-					$grp = (Get-ADGroup -Filter "SID -like '$($ele.SubString(1))'" -Properties MemberOf)
+					$user = Get-ADUser -Filter "SID -like '$($ele.Substring(1))'" -Properties Enabled,LastLogonDate,MemberOf -searchBase $searchbase
+					$grp = (Get-ADGroup -Filter "SID -like '$($ele.SubString(1))'" -Properties MemberOf  -searchBase $searchbase) 
 				
 				}
 				else{
 					#not a SID, seems like custom editing on local group policy editor will append SamAccountName/CN/Name instead of the SID
-					$user = Get-ADUser -Filter "SamAccountName -like '$ele'" -Properties Enabled,LastLogonDate,MemberOf
+					$user = Get-ADUser -Filter "SamAccountName -like '$ele'" -Properties Enabled,LastLogonDate,MemberOf -searchBase $searchbase
 					if (-not $user){
-						$user = Get-ADUser -Filter "CN -like '$ele'" -Properties Enabled,LastLogonDate,MemberOf
+						$user = Get-ADUser -Filter "CN -like '$ele'" -Properties Enabled,LastLogonDate,MemberOf -searchBase $searchbase
 						if (-not $user){
-							$user = Get-ADUser -Filter "Name -like '$ele'" -Properties Enabled,LastLogonDate,MemberOf
+							$user = Get-ADUser -Filter "Name -like '$ele'" -Properties Enabled,LastLogonDate,MemberOf -searchBase $searchbase
 						}
 					}
-					$grp = (Get-ADGroup -Filter "SamAccountName -like '$ele'" -Properties MemberOf)
+					$grp = (Get-ADGroup -Filter "SamAccountName -like '$ele'" -Properties MemberOf -searchBase $searchbase)
 					if (-not $grp){
-						$grp = (Get-ADGroup -Filter "CN -like '$ele'" -Properties MemberOf)
+						$grp = (Get-ADGroup -Filter "CN -like '$ele'" -Properties MemberOf -searchBase $searchbase)
 						if (-not $grp){
-							$grp = (Get-ADGroup -Filter "Name -like '$ele'" -Properties MemberOf)
+							$grp = (Get-ADGroup -Filter "Name -like '$ele'" -Properties MemberOf -searchBase $searchbase)
 						}
 					}
 
@@ -123,23 +123,23 @@ function getUserRights {
 					}
 
 					#get all the users having the right of this group
-					try{$members = (Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Recursive ) |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate}
+					try{$members = (Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Recursive  -searchBase $searchbase ) |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate -searchBase $searchbase}
 					catch{
 						$members = @()
 						$subgrp = @()
 
 						# Write-Host "$($grp.SamAccountName), this group has removed some user such that Get-ADGroupMember cannot be used, now use Get-ADGroup instead on this SID"
 						try{
-						$members += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate
-						$subgrp += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Properties SamAccountName
+						$members += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member -searchBase $searchbase).Member |Get-ADObject -searchBase $searchbase |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate -searchBase $searchbase
+						$subgrp += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member -searchBase $searchbase).Member |Get-ADObject -searchBase $searchbase |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Properties SamAccountName -searchBase $searchbase
 						
 						while ($subgrp){
 							
 							$tmp = $subgrp
 							$subgrp = @()
 							foreach ($m in $tmp) {
-								$members += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate
-								$subgrp += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Properties SamAccountName							
+								$members += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member -searchBase $searchbase).Member |Get-ADObject -searchBase $searchbase |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate -searchBase $searchbase
+								$subgrp += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member -searchBase $searchbase).Member |Get-ADObject -searchBase $searchbase |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Properties SamAccountName	 -searchBase $searchbase						
 							}
 						}
 						}
