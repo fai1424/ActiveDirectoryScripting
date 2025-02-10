@@ -1,12 +1,21 @@
 function getUserRights {
 
-
+    $searchbase = "DC=hkjc,DC=org,DC=hk"
 	$final = @()
 
 	$filteredRight = @() #in case if we want to filter away some right
-	Write-Host "There are total of $((Get-ADUser -filter *).count) users and $((Get-ADGroup -filter *).count) groups"
+	Write-Host "There are total of $((Get-ADUser -filter * -searchBase $searchbase).count) users and $((Get-ADGroup -filter * -searchBase $searchbase).count) groups"
 	# Write-Host "Sanity check: should have $(((Get-ADGroup 'Domain Admins' -Properties Member)).Member.count)"
 	# Write-Host "Sanity check: should have $(((Get-ADGroup 'Service Group Accounts' -Properties Member)).Member.count)"
+
+    # $forest = Get-ADForest
+    # $domains = $forest.Domains 
+    # foreach ($domain in $domains){
+    #     Invoke-Command -ComputerName "dc.$domain" -ScriptBlock {secedit /export /mergedpolicy /cfg "$domain.txt"}
+    #     $file = Get-Content "$domain.txt"
+
+    # }
+
 
 
 	# export security setting 

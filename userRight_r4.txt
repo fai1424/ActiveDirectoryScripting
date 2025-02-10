@@ -35,7 +35,7 @@ function getUserRights {
 			#continue for next line, until file end
 		}
 
-		if ($filteredRight -contains $poname){continue}
+		if ($filteredRight -contains $poname){break}
 		# second loop: handling each element of the Rights
 		foreach ($ele in $loop){
 				$user = ""
