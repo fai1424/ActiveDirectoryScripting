@@ -181,7 +181,7 @@ foreach ($po in $fileContent) {
         }
 
         # Gather all users and groups
-        if ($users.user){
+        if ($users.user.count){
             for ($i = 0; $i -lt $users.user.count;$i = $i+1){
                 $existingEntry = Check-Existence $users.user[$i] $users.domain[$i]
                 if ($existingEntry){
@@ -206,7 +206,7 @@ foreach ($po in $fileContent) {
             }
         }
 
-        if ($groups.group){
+        if ($groups.group.count){
             for ($i = 0; $i -lt $groups.group.count;$i = $i+1){
                 $existingEntry = Check-Existence $groups.group[$i] $groups.domains[$i]
                 if ($existingEntry){
@@ -284,24 +284,20 @@ foreach ($po in $fileContent) {
             return $members
         }
 
-        if ($groups.group){
-            for ($i=0,$i -lt $groups.group.count;$i = $i+1){
-                Write-Host $groups.domains[0].GetType()
-                Write-Host $groups.domains[$i].GetType()
+        if ($groups.group.count){
+            
+            for ($i=0; $i -lt $groups.group.count;$i = $i+1){
 
-                Write-Host $groups.domains[0]
-                Write-Host $groups.domains[$i]
-
-                exit(0)
+                $domain = ($groups.domains[$i] | Out-String).Trim()
                 $members = @()
-                # try{
-                    $members += (Get-ADGroupMember -Identity "$($groups.group[$i].SamAccountName)" -server $groups.domains[$i] -Recursive)|
+                try{
+                    $members += (Get-ADGroupMember -Identity "$($groups.group[$i].SamAccountName)" -server $domain -Recursive)|
                     Where-Object { $_.ObjectClass -match "user" } |
-                    Get-ADUser -Server $groups.domains[$i] -Properties MemberOf, Enabled, LastLogonDate, DistinguishedName 
-                # }
-                # catch{
-                    # $members += Get-GroupMemberRecursively $groups.group[$i] $groups.domains[$i]
-                # }
+                    Get-ADUser -Server $domain -Properties MemberOf, Enabled, LastLogonDate, DistinguishedName 
+                }
+                catch{
+                    $members += Get-GroupMemberRecursively $groups.group[$i] $domain
+                }
                 foreach ($member in $members) {
                     $memberDomain = Extract-DomainFromDN $member.DistinguishedName
                     $existingEntry = Check-Existence $member $memberDomain

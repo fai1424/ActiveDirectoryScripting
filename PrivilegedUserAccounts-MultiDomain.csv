@@ -50,6 +50,7 @@ sesystemtimeprivilege
 setakeownershipprivilege
 seundockprivilege
 ","2/2/2025 6:32:08 PM","Active","Administrators
+
 "
 "EastCharmer.local","test 4","test4","user","Domain Admins
 Backup Operators
@@ -75,7 +76,7 @@ sesystemtimeprivilege
 setakeownershipprivilege
 seundockprivilege
 ","Never","Active","Administrators
-Backup Operators
+
 "
 "EastCharmer.local","test 9","test9","user","recur
 ","sebackupprivilege
@@ -100,6 +101,7 @@ sesystemtimeprivilege
 setakeownershipprivilege
 seundockprivilege
 ","Never","Active","Administrators
+
 "
 "EastCharmer.local","test 3","test3","user","recur
 Print Operators
@@ -125,7 +127,7 @@ sesystemtimeprivilege
 setakeownershipprivilege
 seundockprivilege
 ","Never","Active","Administrators
-Print Operators
+
 "
 "EastCharmer.local","recur member","recurmemebr","user","recur 1
 ","sebackupprivilege
@@ -150,6 +152,7 @@ sesystemtimeprivilege
 setakeownershipprivilege
 seundockprivilege
 ","Never","Active","Administrators
+
 "
 "EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
 ","sebackupprivilege
@@ -174,6 +177,7 @@ sesystemtimeprivilege
 setakeownershipprivilege
 seundockprivilege
 ","Never","Active","Administrators
+
 "
 "EastCharmer.local","Backup Operators","Backup Operators","group","No Groups
 ","sebackupprivilege
@@ -192,8 +196,7 @@ seloaddriverprivilege
 serestoreprivilege
 seshutdownprivilege
 ","Never","Active","Backup Operators
-testgroup
-Print Operators
+
 "
 "EastCharmer.local","testgroup","testgroup","group","Backup Operators
 Print Operators
