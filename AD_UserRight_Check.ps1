@@ -49,6 +49,12 @@ $DCs = Get-ADDomainController -Filter * | Where-Object {
         $false
     }
 }
+# $file += Invoke-Command -ComputerName $dc.HostName -ScriptBlock {
+#     secedit /export /mergedpolicy /cfg C:\Temp\SecuritySettings-$env:COMPUTERNAME.txt
+#     $data = Get-Content C:\Temp\SecuritySettings-$env:COMPUTERNAME.txt
+#     rm C:\Temp\SecuritySettings-$env:COMPUTERNAME.txt
+#     return $data
+# } -ErrorAction Stop
 
 if ($DCs.Count -eq 0) {
     Write-Host "No reachable domain controllers found. Skipping security policy collection."
@@ -64,6 +70,7 @@ if ($DCs.Count -eq 0) {
         }
     }
 }
+
 
 # Gather the security policies from all AD DCs
 $files = Get-ChildItem C:\Temp\SecuritySettings-*.txt -ErrorAction Stop
@@ -183,20 +190,51 @@ foreach ($po in $fileContent) {
 
 
         }
+        function Get-GroupMemberRecursively {
+            param($identity,$domain)
+            $members = @()
+            $subgrp = @()
 
+            $members += (Get-ADGroup -Identity "$($identity.SamAccountName)" -Server $domain -Properties Member).Member |Get-ADObject -Server $domain|Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Server $domain -Properties MemberOf,Enabled,LastLogonDate
+            $subgrp += (Get-ADGroup -Identity "$($identity.SamAccountName)" -Server $domain -Properties Member).Member |Get-ADObject -Server $domain|Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Server $domain -Properties SamAccountName
+            
+            while ($subgrp){
+                
+                $tmp = $subgrp
+                $subgrp = @()
+                foreach ($m in $tmp) {
+                    $members += (Get-ADGroup -Identity "$($m.SamAccountName)" -Server $domain -Properties Member).Member |Get-ADObject -Server $domain |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Server $domain -Properties MemberOf,Enabled,LastLogonDate
+                    $subgrp += (Get-ADGroup -Identity "$($m.SamAccountName)" -Server $domain -Properties Member).Member |Get-ADObject -Server $domain |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Server $domain -Properties SamAccountName							
+                }
+            }
+
+            return $member
+        }
         # Expand all the AD group members
         if ($grp) {
             $members = @()
             foreach ($domain in $domains) {
                 try {
-                    $members += (Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Server $domain -Recursive) |
-                                Where-Object { $_.ObjectClass -match "user" } |
-                                Get-ADUser -Server $domain -Properties MemberOf, Enabled, LastLogonDate, DistinguishedName -ErrorAction SilentlyContinue
+                    # $members += (Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Server $domain -Recursive) |
+                    #             Where-Object { $_.ObjectClass -match "user" } |
+                    #             Get-ADUser -Server $domain -Properties MemberOf, Enabled, LastLogonDate, DistinguishedName -ErrorAction SilentlyContinue
+                    $members += Get-GroupMemberRecursively $grp $domain
                 } catch {
                     Write-Host "Error retrieving members for group: $($grp.SamAccountName) in domain: $domain - $_"
                 }
             }
-
+            # $members += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate
+            # $subgrp += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Properties SamAccountName
+            
+            # while ($subgrp){
+                
+            #     $tmp = $subgrp
+            #     $subgrp = @()
+            #     foreach ($m in $tmp) {
+            #         $members += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate
+            #         $subgrp += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Properties SamAccountName							
+            #     }
+            # }
             foreach ($member in $members) {
                 $memberDomain = Extract-DomainFromDN $member.DistinguishedName
                 $existingEntry = Check-Existence $member $memberDomain
