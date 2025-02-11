@@ -120,7 +120,9 @@ foreach ($po in $fileContent) {
         function Check-Existence{
             param ($checklist,$domainName)
             if ($checklist){
-                $existingEntry = $final|Where-Object {$_.SamAccountName -eq $checklist.SamAccountName -and $_.Domain -eq $domainName}
+                # Write-Host $domainName
+                $existingEntry = $final|Where-Object {($_.SamAccountName -eq $checklist.SamAccountName) -and ($_.Domain -eq $domainName)}
+                # Write-Host ($existingEntry[0].Domain)
                 return $existingEntry
             }
             return ""
@@ -129,12 +131,12 @@ foreach ($po in $fileContent) {
         # Gather all users and groups
         if ($user -or $grp) {
             # check if it is in the list already
-            $existingEntry = if ($user) {Check-Existence $user,$userDomain} else {Check-Existence $grp,$groupDomain}
+            $existingEntry = if ($user) {Check-Existence $user $userDomain} else {Check-Existence $grp $groupDomain}
 
             if ($existingEntry){
                 #this group has been processed before
-                $existingEntry.userRight.add($poname) |Out-Null
-                $existingEntry.source_of_right.add("self") | Out-Null
+                $existingEntry.UserRight.add($poname) |Out-Null
+                $existingEntry.SourceOfRight.add("self") | Out-Null
             }
             else{
 
@@ -172,14 +174,13 @@ foreach ($po in $fileContent) {
 
             foreach ($member in $members) {
                 $memberDomain = Extract-DomainFromDN $member.DistinguishedName
-                $existingEntry = Check-Existence $member,$memberDomain
+                $existingEntry = Check-Existence $member $memberDomain
                 if ($existingEntry){
                     #this group has been processed before
-                    $existingEntry.userRight.add($poname) |Out-Null
-                    $existingEntry.source_of_right.add("$($grp.Name)") | Out-Null
+                    $existingEntry.UserRight.add($poname) |Out-Null
+                    $existingEntry.SourceOfRight.add("$($grp.Name)") | Out-Null
                 }
                 else{
-
 
                     $final += [PSCustomObject]@{
                         Domain = $memberDomain
