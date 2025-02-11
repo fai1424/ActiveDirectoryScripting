@@ -12,7 +12,7 @@ try {
     foreach ($domain in $forest.Domains) {
         try {
             $dnsCheck = Resolve-DnsName -Name $domain -ErrorAction Stop
-            $dcCheck = Get-ADDomainController -Discover -DomainName $domain -ErrorAction Stop
+            $dcCheck = Get-ADDomainController -Discover -DomainName $domain -ErrorAction Stop -Service GlobalCatalog  
             $domains += $domain
             $workingDomains += $domain
             Write-Host "Domain OK: $domain"
@@ -288,15 +288,15 @@ foreach ($po in $fileContent) {
             
             for ($i=0; $i -lt $groups.group.count;$i = $i+1){
 
-                $domain = ($groups.domains[$i] | Out-String).Trim()
+                # $domain = ($groups.domains[$i] | Out-String).Trim()
                 $members = @()
                 try{
-                    $members += (Get-ADGroupMember -Identity "$($groups.group[$i].SamAccountName)" -server $domain -Recursive)|
+                    $members += (Get-ADGroupMember -Identity "$($groups.group[$i].SamAccountName)" -server $groups.group.domains[$i] -Recursive)|
                     Where-Object { $_.ObjectClass -match "user" } |
-                    Get-ADUser -Server $domain -Properties MemberOf, Enabled, LastLogonDate, DistinguishedName 
+                    Get-ADUser -Server $groups.group.domains[$i] -Properties MemberOf, Enabled, LastLogonDate, DistinguishedName -ErrorAction SilentlyContinue
                 }
                 catch{
-                    $members += Get-GroupMemberRecursively $groups.group[$i] $domain
+                    $members += Get-GroupMemberRecursively $groups.group[$i] $groups.group.domains[$i]
                 }
                 foreach ($member in $members) {
                     $memberDomain = Extract-DomainFromDN $member.DistinguishedName
