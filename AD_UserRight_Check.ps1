@@ -157,6 +157,8 @@ foreach ($po in $fileContent) {
                     Write-Host "Error resolving SID for: $ele in domain: $domain - $_"
                 }
             }
+
+
         }
 
         function Extract-GroupName {
@@ -180,7 +182,7 @@ foreach ($po in $fileContent) {
 
         # Gather all users and groups
         if ($users.user){
-            for ($i = 0; $i <$users.user.count;$i = $i+1){
+            for ($i = 0; $i -lt $users.user.count;$i = $i+1){
                 $existingEntry = Check-Existence $users.user[$i] $users.domain[$i]
                 if ($existingEntry){
                     $existingEntry.UserRight.add($poname) |Out-Null
@@ -205,8 +207,8 @@ foreach ($po in $fileContent) {
         }
 
         if ($groups.group){
-            for ($i = 0; $i <$groups.group.count;$i = $i+1){
-                $existingEntry = Check-Existence $groups.group[$i] $groups.domain[$i]
+            for ($i = 0; $i -lt $groups.group.count;$i = $i+1){
+                $existingEntry = Check-Existence $groups.group[$i] $groups.domains[$i]
                 if ($existingEntry){
                     $existingEntry.UserRight.add($poname) |Out-Null
                     $existingEntry.SourceOfRight.add("self") | Out-Null
@@ -214,7 +216,7 @@ foreach ($po in $fileContent) {
                 else{
                     
                     $final += [PSCustomObject]@{
-                        Domain = $groups.domain[$i]
+                        Domain = $groups.domains[$i]
                         Name = $groups.group[$i].Name 
                         SamAccountName = $groups.group[$i].SamAccountName
                         ObjectClass = $groups.group[$i].ObjectClass
@@ -262,7 +264,7 @@ foreach ($po in $fileContent) {
 
         # }
         function Get-GroupMemberRecursively {
-            param($identity,$domain)
+            param($identity,[String]$domain)
             $members = @()
             $subgrp = @()
 
@@ -283,16 +285,23 @@ foreach ($po in $fileContent) {
         }
 
         if ($groups.group){
-            for ($i=0,$i<$groups.group.count;$i = $i+1){
+            for ($i=0,$i -lt $groups.group.count;$i = $i+1){
+                Write-Host $groups.domains[0].GetType()
+                Write-Host $groups.domains[$i].GetType()
+
+                Write-Host $groups.domains[0]
+                Write-Host $groups.domains[$i]
+
+                exit(0)
                 $members = @()
-                try{
-                    $members += (Get-ADGroupMember -Identity "$($groups.group[$i].SamAccountName)" -server $groups.domain[$i] -Recursive)|
+                # try{
+                    $members += (Get-ADGroupMember -Identity "$($groups.group[$i].SamAccountName)" -server $groups.domains[$i] -Recursive)|
                     Where-Object { $_.ObjectClass -match "user" } |
-                    Get-ADUser -Server $groups.domain[$i] -Properties MemberOf, Enabled, LastLogonDate, DistinguishedName 
-                }
-                catch{
-                    $members += Get-GroupMemberRecursively $groups.group[$i] $groups.domain[$i]
-                }
+                    Get-ADUser -Server $groups.domains[$i] -Properties MemberOf, Enabled, LastLogonDate, DistinguishedName 
+                # }
+                # catch{
+                    # $members += Get-GroupMemberRecursively $groups.group[$i] $groups.domains[$i]
+                # }
                 foreach ($member in $members) {
                     $memberDomain = Extract-DomainFromDN $member.DistinguishedName
                     $existingEntry = Check-Existence $member $memberDomain
