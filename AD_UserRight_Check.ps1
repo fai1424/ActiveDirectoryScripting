@@ -276,8 +276,21 @@ foreach ($po in $fileContent) {
                 $tmp = $subgrp
                 $subgrp = @()
                 foreach ($m in $tmp) {
-                    $members += (Get-ADGroup -Identity "$($m.SamAccountName)" -Server $domain -Properties Member).Member |Get-ADUser -Server $domain -Properties MemberOf,Enabled,LastLogonDate -ErrorAction SilentlyContinue
-                    $subgrp += (Get-ADGroup -Identity "$($m.SamAccountName)" -Server $domain -Properties Member).Member |Get-ADGroup -Server $domain -Properties SamAccountName -ErrorAction SilentlyContinue							
+                    foreach ($subdomain in $domains){
+                        $trialGroup = Get-ADGroup -Filter "SID -like $($m.SID)" -Server $subdomain -Properties Member
+                        if ($trialGroup){
+                            foreach ($eachMember in $trialGroup.Member){
+                                foreach ($innerdomain in $domains){
+                                    $members += Get-ADUser -Identity $eachMember -server $innerdomain -Properties MemberOf,Enabled,LastLogonDate -ErrorAction SilentlyContinue
+                                    $subgrp += Get-ADGroup -Identity $eachMember -Server $innerdomain -Properties SamAccountName -ErrorAction SilentlyContinue
+                                }
+                            }
+                            break
+                        }
+
+                    }
+                    # $members += (Get-ADGroup -Identity "$($m.SamAccountName)" -Server $domain -Properties Member).Member |Get-ADUser -Server $domain -Properties MemberOf,Enabled,LastLogonDate -ErrorAction SilentlyContinue
+                    # $subgrp += (Get-ADGroup -Identity "$($m.SamAccountName)" -Server $domain -Properties Member).Member |Get-ADGroup -Server $domain -Properties SamAccountName -ErrorAction SilentlyContinue							
                 }
             }
 
