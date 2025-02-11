@@ -264,7 +264,7 @@ foreach ($po in $fileContent) {
 
         # }
         function Get-GroupMemberRecursively {
-            param($identity,[String]$domain)
+            param($identity,$domain)
             $members = @()
             $subgrp = @()
 
@@ -287,7 +287,7 @@ foreach ($po in $fileContent) {
                                         $members +=$testobject
                                     }
                                     
-                                    $testobject= Get-ADGroup -Filter "DistinguishedName -like '$eachMember'" -Server $innerdomain -Properties SamAccountName -ErrorAction SilentlyContinue
+                                    $testobject= Get-ADGroup -Filter "DistinguishedName -like '$eachMember'" -Server $innerdomain -Properties SamAccountName,MemberOf -ErrorAction SilentlyContinue
                                     if ($testobject){
 
                                         $existingEntry = Check-Existence $testobject $innerdomain
@@ -296,13 +296,13 @@ foreach ($po in $fileContent) {
                                             $existingEntry.SourceOfRight.add($identity.SamAccountName) | Out-Null
                                         }           
                                         else{
-                                            
+                                            # Write-Host $testobject.MemberOf
                                             $final += [PSCustomObject]@{
                                                 Domain = $innerdomain
                                                 Name = $testobject.Name
                                                 SamAccountName = $testobject.SamAccountName
                                                 ObjectClass = $testobject.ObjectClass
-                                                MemberOf =  Extract-GroupName $testobject.MemberOf -join ";"
+                                                MemberOf =  Extract-GroupName $testobject.MemberOf
                                                 UserRight = [Collections.Generic.HashSet[string]]@($poname)
                                                 LastLogonDate = "Never" 
                                                 AccountStatus =  "NA" 
