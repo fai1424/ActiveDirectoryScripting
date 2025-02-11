@@ -12,7 +12,7 @@ try {
     foreach ($domain in $forest.Domains) {
         try {
             $dnsCheck = Resolve-DnsName -Name $domain -ErrorAction Stop
-            $dcCheck = Get-ADDomainController -Discover -DomainName $domain -ErrorAction Stop -Service GlobalCatalog  
+            $dcCheck = Get-ADDomainController -Discover -DomainName $domain -ErrorAction Stop  
             $domains += $domain
             $workingDomains += $domain
             Write-Host "Domain OK: $domain"
@@ -287,6 +287,10 @@ foreach ($po in $fileContent) {
         if ($groups.group.count){
             
             for ($i=0; $i -lt $groups.group.count;$i = $i+1){
+                if ($groups.group.count -ne $groups.domains.count){
+                    Write-Host "group and domain length not match!"
+                }
+
 
                 # $domain = ($groups.domains[$i] | Out-String).Trim()
                 $members = @()
