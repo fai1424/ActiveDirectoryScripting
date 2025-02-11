@@ -38,6 +38,13 @@ function Extract-DomainFromDN {
     return "Unknown"
 }
 
+# Check the Temp folder is exist on the running host
+$TempFolder = "C:\Temp"
+if (!(Test-Path $TempFolder)) {
+    Write-Host "Creating missing Temp folder on local machine at $TempFolder..."
+    New-Item -Path $TempFolder -ItemType Directory -Force | Out-Null
+}
+
 # Export the security settings from all AD DCs
 $DCs = Get-ADDomainController -Filter * | Where-Object {
     try {
@@ -49,20 +56,27 @@ $DCs = Get-ADDomainController -Filter * | Where-Object {
         $false
     }
 }
-# $file += Invoke-Command -ComputerName $dc.HostName -ScriptBlock {
-#     secedit /export /mergedpolicy /cfg C:\Temp\SecuritySettings-$env:COMPUTERNAME.txt
-#     $data = Get-Content C:\Temp\SecuritySettings-$env:COMPUTERNAME.txt
-#     rm C:\Temp\SecuritySettings-$env:COMPUTERNAME.txt
-#     return $data
-# } -ErrorAction Stop
 
+$fileContent = ""
 if ($DCs.Count -eq 0) {
     Write-Host "No reachable domain controllers found. Skipping security policy collection."
 } else {
     foreach ($dc in $DCs) {
         try {
+            # check the Temp folder is exist on each DCs
             Invoke-Command -ComputerName $dc.HostName -ScriptBlock {
-                secedit /export /mergedpolicy /cfg C:\Temp\SecuritySettings-$env:COMPUTERNAME.txt
+                if (!(Test-Path "C:\Temp")) {
+                    Write-Host "Creating missing Temp folder on $env:COMPUTERNAME..."
+                    New-Item -Path "C:\Temp" -ItemType Directory -Force | Out-Null
+                }
+            } -ErrorAction Stop
+
+            # export security settings from each DC
+            $fileContent += Invoke-Command -ComputerName $dc.HostName -ScriptBlock {
+                secedit /export /mergedpolicy /cfg "C:\Temp\SecuritySettings-$env:COMPUTERNAME.txt"
+                $data = Get-Content "C:\Temp\SecuritySettings-$env:COMPUTERNAME.txt"
+                rm "C:\Temp\SecuritySettings-$env:COMPUTERNAME.txt"
+                return $data
             } -ErrorAction Stop
         } catch {
             Write-Host "Failed to export security policies from: $($dc.HostName)"
@@ -71,10 +85,9 @@ if ($DCs.Count -eq 0) {
     }
 }
 
-
 # Gather the security policies from all AD DCs
-$files = Get-ChildItem C:\Temp\SecuritySettings-*.txt -ErrorAction Stop
-$fileContent = foreach ($file in $files) { Get-Content $file.FullName -ErrorAction Stop }
+# $files = Get-ChildItem C:\Temp\SecuritySettings-*.txt -ErrorAction Stop
+# $fileContent = foreach ($file in $files) { Get-Content $file.FullName -ErrorAction Stop }
 
 foreach ($po in $fileContent) {
     if ($po -match "=") {
@@ -85,21 +98,23 @@ foreach ($po in $fileContent) {
     } else { continue }
 
     foreach ($ele in $loop) {
+        
         $user = $null
         $grp = $null
-        $userDomain = "Unknown"
-        $groupDomain = "Unknown"
-
+        $userDomain = @()
+        $groupDomain = @()
         foreach ($domain in $domains) {
             try {
-                if (-not $user) {
+                # if (-not $user) {
                     $user = Get-ADUser -Filter "SamAccountName -like '$ele'" -Server $domain -Properties Enabled,LastLogonDate,MemberOf,DistinguishedName -ErrorAction SilentlyContinue
-                    if ($user) { $userDomain = Extract-DomainFromDN $user.DistinguishedName }
-                }
-                if (-not $grp) {
+                    if ($user) { $userDomain += Extract-DomainFromDN $user.DistinguishedName }
+                    
+                # }
+                # if (-not $grp) {
                     $grp = Get-ADGroup -Filter "SamAccountName -like '$ele'" -Server $domain -Properties MemberOf,DistinguishedName -ErrorAction SilentlyContinue
-                    if ($grp) { $groupDomain = Extract-DomainFromDN $grp.DistinguishedName }
-                }
+                    if ($grp) { $groupDomain += Extract-DomainFromDN $grp.DistinguishedName }
+                    
+                # }
             } catch {
                 Write-Host "Error retrieving AD object: $ele in domain: $domain - $_"
             }
@@ -122,23 +137,23 @@ foreach ($po in $fileContent) {
                 }
             }
         }
-        else {
+        # else {
 
-            foreach ($domain in $domains) {
-                try {
-                    if (-not $user) { 
-                        $user = Get-ADUser -Filter "SamAccountName -like '$ele'" -Server $domain -Properties Enabled,LastLogonDate,MemberOf,DistinguishedName -ErrorAction SilentlyContinue
-                        if ($user) { $userDomain = Extract-DomainFromDN $user.DistinguishedName }
-                    }
-                    if (-not $grp) {
-                        $grp = Get-ADGroup -Filter "SamAccountName -like '$ele'" -Server $domain -Properties MemberOf,DistinguishedName -ErrorAction SilentlyContinue
-                        if ($grp) { $groupDomain = Extract-DomainFromDN $grp.DistinguishedName }
-                    }
-                } catch {
-                    Write-Host "Error resolving SamAccountName for: $ele in domain: $domain - $_"
-                }
-            }
-        }
+        #     foreach ($domain in $domains) {
+        #         try {
+        #             if (-not $user) { 
+        #                 $user = Get-ADUser -Filter "SamAccountName -like '$ele'" -Server $domain -Properties Enabled,LastLogonDate,MemberOf,DistinguishedName -ErrorAction SilentlyContinue
+        #                 if ($user) { $userDomain = Extract-DomainFromDN $user.DistinguishedName }
+        #             }
+        #             if (-not $grp) {
+        #                 $grp = Get-ADGroup -Filter "SamAccountName -like '$ele'" -Server $domain -Properties MemberOf,DistinguishedName -ErrorAction SilentlyContinue
+        #                 if ($grp) { $groupDomain = Extract-DomainFromDN $grp.DistinguishedName }
+        #             }
+        #         } catch {
+        #             Write-Host "Error resolving SamAccountName for: $ele in domain: $domain - $_"
+        #         }
+        #     }
+        # }
 
 
         function Extract-GroupName {
@@ -208,7 +223,7 @@ foreach ($po in $fileContent) {
                 }
             }
 
-            return $member
+            return $members
         }
         # Expand all the AD group members
         if ($grp) {
