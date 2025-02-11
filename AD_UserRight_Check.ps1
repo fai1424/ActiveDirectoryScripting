@@ -291,12 +291,12 @@ foreach ($po in $fileContent) {
                 # $domain = ($groups.domains[$i] | Out-String).Trim()
                 $members = @()
                 try{
-                    $members += (Get-ADGroupMember -Identity "$($groups.group[$i].SamAccountName)" -server $groups.group.domains[$i] -Recursive)|
+                    $members += (Get-ADGroupMember -Identity "$($groups.group[$i].SamAccountName)" -server $groups.domains[$i] -Recursive)|
                     Where-Object { $_.ObjectClass -match "user" } |
-                    Get-ADUser -Server $groups.group.domains[$i] -Properties MemberOf, Enabled, LastLogonDate, DistinguishedName -ErrorAction SilentlyContinue
+                    Get-ADUser -Server $groups.domains[$i] -Properties MemberOf, Enabled, LastLogonDate, DistinguishedName -ErrorAction SilentlyContinue
                 }
                 catch{
-                    $members += Get-GroupMemberRecursively $groups.group[$i] $groups.group.domains[$i]
+                    $members += Get-GroupMemberRecursively $groups.group[$i] $groups.domains[$i]
                 }
                 foreach ($member in $members) {
                     $memberDomain = Extract-DomainFromDN $member.DistinguishedName
