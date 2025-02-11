@@ -289,6 +289,31 @@ foreach ($po in $fileContent) {
                                     
                                     $testobject= Get-ADGroup -Filter "DistinguishedName -like '$eachMember'" -Server $innerdomain -Properties SamAccountName -ErrorAction SilentlyContinue
                                     if ($testobject){
+
+                                        $existingEntry = Check-Existence $testobject $innerdomain
+                                        if ($existingEntry){
+                                            $existingEntry.UserRight.add($poname) |Out-Null
+                                            $existingEntry.SourceOfRight.add($identity.SamAccountName) | Out-Null
+                                        }           
+                                        else{
+                                            
+                                            $final += [PSCustomObject]@{
+                                                Domain = $innerdomain
+                                                Name = $testobject.Name
+                                                SamAccountName = $testobject.SamAccountName
+                                                ObjectClass = $testobject.ObjectClass
+                                                MemberOf =  Extract-GroupName $testobject.MemberOf -join ";"
+                                                UserRight = [Collections.Generic.HashSet[string]]@($poname)
+                                                LastLogonDate = "Never" 
+                                                AccountStatus =  "NA" 
+                                                SourceOfRight = [Collections.Generic.HashSet[string]]@($identity.SamAccountName)
+                                            }
+                            
+                                        }
+
+
+
+
                                         $subgrp += $testobject
                                     }
                                 }

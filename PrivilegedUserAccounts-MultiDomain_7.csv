@@ -1,0 +1,494 @@
+﻿"Domain","Name","SamAccountName","ObjectClass","MemberOf","UserRight","LastLogonDate","AccountStatus","SourceOfRight"
+"testlab.corp.local","Administrators","Administrators","group","No Groups
+","sebackupprivilege
+sebatchlogonright
+sechangenotifyprivilege
+secreatepagefileprivilege
+sedebugprivilege
+seenabledelegationprivilege
+seincreasebasepriorityprivilege
+seincreasequotaprivilege
+seinteractivelogonright
+seloaddriverprivilege
+senetworklogonright
+seprofilesingleprocessprivilege
+seremoteshutdownprivilege
+serestoreprivilege
+sesecurityprivilege
+seshutdownprivilege
+sesystemenvironmentprivilege
+sesystemprofileprivilege
+sesystemtimeprivilege
+setakeownershipprivilege
+seundockprivilege
+","Never","NA","self
+"
+"VDI.testlab.corp.local","Administrators","Administrators","group","No Groups
+","sebackupprivilege
+sebatchlogonright
+sechangenotifyprivilege
+secreatepagefileprivilege
+sedebugprivilege
+seenabledelegationprivilege
+seincreasebasepriorityprivilege
+seincreasequotaprivilege
+seinteractivelogonright
+seloaddriverprivilege
+senetworklogonright
+seprofilesingleprocessprivilege
+seremoteshutdownprivilege
+serestoreprivilege
+sesecurityprivilege
+seshutdownprivilege
+sesystemenvironmentprivilege
+sesystemprofileprivilege
+sesystemtimeprivilege
+setakeownershipprivilege
+seundockprivilege
+","Never","NA","self
+"
+"testlab.corp,DC=local","REED_KIRKLAND","REED_KIRKLAND","user","CL-ali-admingroup1
+DE-917266361-distlist1
+IV-est-distlist1
+CH-9975freen-admingroup1
+BR-cor-distlist1
+IR-eur-distlist1
+34-mamaypapa-distlist1
+RI-oxyzazou5-distlist1
+BE-139-admingroup1
+Administrators
+","sebackupprivilege
+sebatchlogonright
+sechangenotifyprivilege
+secreatepagefileprivilege
+sedebugprivilege
+seenabledelegationprivilege
+seincreasebasepriorityprivilege
+seincreasequotaprivilege
+seinteractivelogonright
+seloaddriverprivilege
+senetworklogonright
+seprofilesingleprocessprivilege
+seremoteshutdownprivilege
+serestoreprivilege
+sesecurityprivilege
+seshutdownprivilege
+sesystemenvironmentprivilege
+sesystemprofileprivilege
+sesystemtimeprivilege
+setakeownershipprivilege
+seundockprivilege
+","Never","Active","Administrators
+
+"
+"testlab.corp,DC=local","KATHIE_HODGE","KATHIE_HODGE","user","Administrators
+","sebackupprivilege
+sebatchlogonright
+sechangenotifyprivilege
+secreatepagefileprivilege
+sedebugprivilege
+seenabledelegationprivilege
+seincreasebasepriorityprivilege
+seincreasequotaprivilege
+seinteractivelogonright
+seloaddriverprivilege
+senetworklogonright
+seprofilesingleprocessprivilege
+seremoteshutdownprivilege
+serestoreprivilege
+sesecurityprivilege
+seshutdownprivilege
+sesystemenvironmentprivilege
+sesystemprofileprivilege
+sesystemtimeprivilege
+setakeownershipprivilege
+seundockprivilege
+","Never","Active","Administrators
+
+"
+"testlab.corp,DC=local","ERIN_HUGHES","ERIN_HUGHES","user","DE-champagno-distlist1
+LE-karajo200-distlist1
+BE-diciembre-distlist1
+LY-bere3deju-admingroup1
+Administrators
+","sebackupprivilege
+sebatchlogonright
+sechangenotifyprivilege
+secreatepagefileprivilege
+sedebugprivilege
+seenabledelegationprivilege
+seincreasebasepriorityprivilege
+seincreasequotaprivilege
+seinteractivelogonright
+seloaddriverprivilege
+senetworklogonright
+seprofilesingleprocessprivilege
+seremoteshutdownprivilege
+serestoreprivilege
+sesecurityprivilege
+seshutdownprivilege
+sesystemenvironmentprivilege
+sesystemprofileprivilege
+sesystemtimeprivilege
+setakeownershipprivilege
+seundockprivilege
+","Never","Active","Administrators
+
+"
+"testlab.corp,DC=local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","sebackupprivilege
+sebatchlogonright
+sechangenotifyprivilege
+secreatepagefileprivilege
+sedebugprivilege
+seenabledelegationprivilege
+seincreasebasepriorityprivilege
+seincreasequotaprivilege
+seinteractivelogonright
+seloaddriverprivilege
+senetworklogonright
+seprofilesingleprocessprivilege
+seremoteshutdownprivilege
+serestoreprivilege
+sesecurityprivilege
+seshutdownprivilege
+sesystemenvironmentprivilege
+sesystemprofileprivilege
+sesystemtimeprivilege
+setakeownershipprivilege
+seundockprivilege
+","2/4/2025 8:16:55 PM","Active","Administrators
+
+"
+"testlab.corp,DC=local","NICK_LEBLANC","NICK_LEBLANC","user","RO-401-admingroup1
+CH-belencita-distlist1
+WI-DANIYTUTI-distlist1
+KA-mig-distlist1
+CH-bab-admingroup1
+RU-tel-distlist1
+Domain Admins
+","sebackupprivilege
+sebatchlogonright
+sechangenotifyprivilege
+secreatepagefileprivilege
+sedebugprivilege
+seenabledelegationprivilege
+seincreasebasepriorityprivilege
+seincreasequotaprivilege
+seinteractivelogonright
+seloaddriverprivilege
+senetworklogonright
+seprofilesingleprocessprivilege
+seremoteshutdownprivilege
+serestoreprivilege
+sesecurityprivilege
+seshutdownprivilege
+sesystemenvironmentprivilege
+sesystemprofileprivilege
+sesystemtimeprivilege
+setakeownershipprivilege
+seundockprivilege
+","Never","Active","Administrators
+
+"
+"testlab.corp,DC=local","MARGUERITE_MOSES","MARGUERITE_MOSES","user","ME-justice34-distlist1
+DU-papaaug18-distlist1
+DA-chi-admingroup1
+AP-mar-distlist1
+CO-jmf151121-admingroup1
+Domain Admins
+","sebackupprivilege
+sebatchlogonright
+sechangenotifyprivilege
+secreatepagefileprivilege
+sedebugprivilege
+seenabledelegationprivilege
+seincreasebasepriorityprivilege
+seincreasequotaprivilege
+seinteractivelogonright
+seloaddriverprivilege
+senetworklogonright
+seprofilesingleprocessprivilege
+seremoteshutdownprivilege
+serestoreprivilege
+sesecurityprivilege
+seshutdownprivilege
+sesystemenvironmentprivilege
+sesystemprofileprivilege
+sesystemtimeprivilege
+setakeownershipprivilege
+seundockprivilege
+","Never","Active","Administrators
+
+"
+"VDI.testlab,DC=corp,DC=local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Administrators
+","sebackupprivilege
+sebatchlogonright
+sechangenotifyprivilege
+secreatepagefileprivilege
+sedebugprivilege
+seenabledelegationprivilege
+seincreasebasepriorityprivilege
+seincreasequotaprivilege
+seinteractivelogonright
+seloaddriverprivilege
+senetworklogonright
+seprofilesingleprocessprivilege
+seremoteshutdownprivilege
+serestoreprivilege
+sesecurityprivilege
+seshutdownprivilege
+sesystemenvironmentprivilege
+sesystemprofileprivilege
+sesystemtimeprivilege
+setakeownershipprivilege
+seundockprivilege
+","2/9/2025 10:53:21 PM","Active","Administrators
+
+"
+"VDI.testlab,DC=corp,DC=local","VDI Admin","vdi_admin","user","Domain Admins
+","sebackupprivilege
+sebatchlogonright
+sechangenotifyprivilege
+secreatepagefileprivilege
+sedebugprivilege
+seenabledelegationprivilege
+seincreasebasepriorityprivilege
+seincreasequotaprivilege
+seinteractivelogonright
+seloaddriverprivilege
+senetworklogonright
+seprofilesingleprocessprivilege
+seremoteshutdownprivilege
+serestoreprivilege
+sesecurityprivilege
+seshutdownprivilege
+sesystemenvironmentprivilege
+sesystemprofileprivilege
+sesystemtimeprivilege
+setakeownershipprivilege
+seundockprivilege
+","Never","Active","Administrators
+
+"
+"testlab.corp.local","Backup Operators","Backup Operators","group","No Groups
+","sebackupprivilege
+sebatchlogonright
+seinteractivelogonright
+serestoreprivilege
+seshutdownprivilege
+","Never","NA","self
+"
+"VDI.testlab.corp.local","Backup Operators","Backup Operators","group","No Groups
+","sebackupprivilege
+sebatchlogonright
+seinteractivelogonright
+serestoreprivilege
+seshutdownprivilege
+","Never","NA","self
+"
+"testlab.corp,DC=local","VERNA_NORMAN","VERNA_NORMAN","user","ED-teibolera-distlist1
+CL-ast-distlist1
+LI-150-distlist1
+DE-1154talis-distlist1
+LI-seiginomi-distlist1
+Backup Operators
+","sebackupprivilege
+sebatchlogonright
+seinteractivelogonright
+serestoreprivilege
+seshutdownprivilege
+","Never","Active","Backup Operators
+
+"
+"testlab.corp,DC=local","DELIA_TATE","DELIA_TATE","user","RO-na2-distlist1
+ER-cherrylip-admingroup1
+PE-580-distlist1
+RO-brazilian-admingroup1
+LY-bere3deju-admingroup1
+AL-MA16RO26M-distlist1
+SY-yan-distlist1
+Backup Operators
+","sebackupprivilege
+sebatchlogonright
+seinteractivelogonright
+serestoreprivilege
+seshutdownprivilege
+","Never","Active","Backup Operators
+
+"
+"testlab.corp,DC=local","ALEX_MEYER","ALEX_MEYER","user","ME-justice34-distlist1
+KA-miguelina-admingroup1
+GR-jimbito23-admingroup1
+DE-soporaete-admingroup1
+ER-170-distlist1
+DU-papaaug18-distlist1
+DnsUpdateProxy
+Backup Operators
+","sebackupprivilege
+sebatchlogonright
+seinteractivelogonright
+serestoreprivilege
+seshutdownprivilege
+","Never","Active","Backup Operators
+
+"
+"VDI.testlab,DC=corp,DC=local","VDI Operator","vdi_operator","user","Account Operators
+Backup Operators
+Print Operators
+","sebackupprivilege
+sebatchlogonright
+seinteractivelogonright
+seloaddriverprivilege
+serestoreprivilege
+seshutdownprivilege
+","Never","Active","Backup Operators
+
+"
+"testlab.corp.local","Server Operators","Server Operators","group","No Groups
+","sebackupprivilege
+seinteractivelogonright
+seremoteshutdownprivilege
+serestoreprivilege
+seshutdownprivilege
+sesystemtimeprivilege
+","Never","NA","self
+"
+"VDI.testlab.corp.local","Server Operators","Server Operators","group","No Groups
+","sebackupprivilege
+seinteractivelogonright
+seremoteshutdownprivilege
+serestoreprivilege
+seshutdownprivilege
+sesystemtimeprivilege
+","Never","NA","self
+"
+"testlab.corp,DC=local","ARTURO_ENGLAND","ARTURO_ENGLAND","user","CL-mar-distlist1
+SU-exterior2-distlist1
+JE-jonyserra-distlist1
+CH-abr-distlist1
+MI-kar-distlist1
+DA-pat-distlist1
+JU-blancanie-distlist1
+DA-rosanelly-distlist1
+66-despertar-distlist1
+LO-and-distlist1
+Server Operators
+","sebackupprivilege
+seinteractivelogonright
+seremoteshutdownprivilege
+serestoreprivilege
+seshutdownprivilege
+sesystemtimeprivilege
+","Never","Active","Server Operators
+
+"
+"testlab.corp.local","Performance Log Users","Performance Log Users","group","No Groups
+","sebatchlogonright
+","Never","NA","self
+"
+"VDI.testlab.corp.local","Performance Log Users","Performance Log Users","group","No Groups
+","sebatchlogonright
+","Never","NA","self
+"
+"testlab.corp,DC=local","GWEN_DENNIS","GWEN_DENNIS","user","Performance Log Users
+","sebatchlogonright
+","Never","Active","Performance Log Users
+"
+"testlab.corp,DC=local","TODD_BARRON","TODD_BARRON","user","PI-25dejunio-distlist1
+DE-917266361-distlist1
+EA-arw-distlist1
+KA-mig-distlist1
+JU-PIN-distlist1
+SH-fuentesbl-distlist1
+DO-camilitay-distlist1
+OR-jmsr30097-distlist1
+51-fjffhghhf-admingroup1
+TI-teamojazm-admingroup1
+Performance Log Users
+","sebatchlogonright
+","Never","Active","Performance Log Users
+"
+"testlab.corp.local","Pre-Windows 2000 Compatible Access","Pre-Windows 2000 Compatible Access","group","No Groups
+","sechangenotifyprivilege
+senetworklogonright
+","Never","NA","self
+"
+"VDI.testlab.corp.local","Pre-Windows 2000 Compatible Access","Pre-Windows 2000 Compatible Access","group","No Groups
+","sechangenotifyprivilege
+senetworklogonright
+","Never","NA","self
+"
+"testlab.corp,DC=local","DIEGO_GOODMAN","DIEGO_GOODMAN","user","JE-can-distlist1
+NI-die-distlist1
+JA-123-distlist1
+MA-cri-distlist1
+CH-240-admingroup1
+66-fonseca17-distlist1
+OR-jua-admingroup1
+Pre-Windows 2000 Compatible Access
+","sechangenotifyprivilege
+senetworklogonright
+","Never","Active","Pre-Windows 2000 Compatible Access
+
+"
+"testlab.corp.local","Account Operators","Account Operators","group","No Groups
+","seinteractivelogonright
+","Never","NA","self
+"
+"VDI.testlab.corp.local","Account Operators","Account Operators","group","No Groups
+","seinteractivelogonright
+","Never","NA","self
+"
+"testlab.corp,DC=local","ELNORA_CRUZ","ELNORA_CRUZ","user","66-fonseca17-distlist1
+DO-esc-admingroup1
+FR-_C3A0C3A7-distlist1
+RE-202-distlist1
+Account Operators
+","seinteractivelogonright
+","Never","Active","Account Operators
+"
+"testlab.corp.local","Print Operators","Print Operators","group","No Groups
+","seinteractivelogonright
+seloaddriverprivilege
+seshutdownprivilege
+","Never","NA","self
+"
+"VDI.testlab.corp.local","Print Operators","Print Operators","group","No Groups
+","seinteractivelogonright
+seloaddriverprivilege
+seshutdownprivilege
+","Never","NA","self
+"
+"testlab.corp,DC=local","CAMERON_NGUYEN","CAMERON_NGUYEN","user","NO-bon-admingroup1
+CA-indiferen-distlist1
+MO-gui-distlist1
+AN-chi-distlist1
+JA-cam-distlist1
+DA-thy-distlist1
+Print Operators
+","seinteractivelogonright
+seloaddriverprivilege
+seshutdownprivilege
+","Never","Active","Print Operators
+
+"
+"testlab.corp,DC=local","LIDIA_SAVAGE","LIDIA_SAVAGE","user","KE-14a-distlist1
+LE-karajo200-distlist1
+DE-ama-admingroup1
+ME-aza-distlist1
+DO-esc-admingroup1
+TA-37malena7-distlist1
+Print Operators
+","seinteractivelogonright
+seloaddriverprivilege
+seshutdownprivilege
+","Never","Active","Print Operators
+
+"
