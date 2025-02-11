@@ -277,12 +277,20 @@ foreach ($po in $fileContent) {
                 $subgrp = @()
                 foreach ($m in $tmp) {
                     foreach ($subdomain in $domains){
-                        $trialGroup = Get-ADGroup -Filter "SID -like $($m.SID)" -Server $subdomain -Properties Member
+                        $trialGroup = Get-ADGroup -Filter "SID -like '$($m.SID)'" -Server $subdomain -Properties Member
+                        # Write-Host $trialGroup.Member
                         if ($trialGroup){
                             foreach ($eachMember in $trialGroup.Member){
                                 foreach ($innerdomain in $domains){
-                                    $members += Get-ADUser -Identity $eachMember -server $innerdomain -Properties MemberOf,Enabled,LastLogonDate -ErrorAction SilentlyContinue
-                                    $subgrp += Get-ADGroup -Identity $eachMember -Server $innerdomain -Properties SamAccountName -ErrorAction SilentlyContinue
+                                    $testobject = Get-ADUser -Filter "DistinguishedName -like '$eachMember'" -server $innerdomain -Properties MemberOf,Enabled,LastLogonDate -ErrorAction SilentlyContinue
+                                    if ($testobject){
+                                        $members +=$testobject
+                                    }
+                                    
+                                    $testobject= Get-ADGroup -Filter "DistinguishedName -like '$eachMember'" -Server $innerdomain -Properties SamAccountName -ErrorAction SilentlyContinue
+                                    if ($testobject){
+                                        $subgrp += $testobject
+                                    }
                                 }
                             }
                             break
