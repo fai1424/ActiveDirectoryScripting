@@ -1,7 +1,7 @@
 function getUserRights {
 
-    $searchbase = "DC=hkjc,DC=org,DC=hk"
-    $searchbase = "DC=EastCharmer,DC=local"
+    $searchbase = "DC=betting,DC=hkjc,DC=org,DC=hk"
+    # $searchbase = "DC=EastCharmer,DC=local"
 	$final = @()
 
 	$filteredRight = @() #in case if we want to filter away some right
