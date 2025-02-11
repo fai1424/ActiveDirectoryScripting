@@ -73,7 +73,7 @@ foreach ($po in $fileContent) {
             }
         }
 
-        # Translate the SID
+        # Translate the SID or SamAccountName
         if ($ele[0] -eq "*") {
             foreach ($domain in $domains) {
                 try {
@@ -90,6 +90,24 @@ foreach ($po in $fileContent) {
                 }
             }
         }
+        else {
+
+            foreach ($domain in $domains) {
+                try {
+                    if (-not $user) { 
+                        $user = Get-ADUser -Filter "SamAccountName -like '$ele'" -Server $domain -Properties Enabled,LastLogonDate,MemberOf,DistinguishedName -ErrorAction SilentlyContinue
+                        if ($user) { $userDomain = Extract-DomainFromDN $user.DistinguishedName }
+                    }
+                    if (-not $grp) {
+                        $grp = Get-ADGroup -Filter "SamAccountName -like '$ele'" -Server $domain -Properties MemberOf,DistinguishedName -ErrorAction SilentlyContinue
+                        if ($grp) { $groupDomain = Extract-DomainFromDN $grp.DistinguishedName }
+                    }
+                } catch {
+                    Write-Host "Error resolving SamAccountName for: $ele in domain: $domain - $_"
+                }
+            }
+        }
+
 
         function Extract-GroupName {
             param ($dnList)
@@ -99,19 +117,44 @@ foreach ($po in $fileContent) {
             return "No Groups"
         }
 
+        function Check-Existence{
+            param ($checklist,$domainName)
+            if ($checklist){
+                $existingEntry = $final|Where-Object {$_.SamAccountName -eq $checklist.SamAccountName -and $_.Domain -eq $domainName}
+                return $existingEntry
+            }
+            return ""
+        }
+
         # Gather all users and groups
         if ($user -or $grp) {
-            $final += [PSCustomObject]@{
-                Domain = if ($user) { $userDomain } else { $groupDomain }
-                Name = if ($user) { $user.Name } else { $grp.Name }
-                SamAccountName = if ($user) { $user.SamAccountName } else { $grp.SamAccountName }
-                ObjectClass = if ($user) { $user.ObjectClass } else { $grp.ObjectClass }
-                MemberOf = if ($user) { Extract-GroupName $user.MemberOf -join ";" } else { Extract-GroupName $grp.MemberOf -join ";" }
-                UserRight = [Collections.Generic.HashSet[string]]@($poname)
-                LastLogonDate = if ($user.LastLogonDate) { $user.LastLogonDate } else { "Never" }
-                AccountStatus = if ($user.Enabled) { If ($user.Enabled -eq 'True') { 'Active' } else { 'Disabled' } } else { "NA" }
-                SourceOfRight = [Collections.Generic.HashSet[string]]@("self")
+            # check if it is in the list already
+            $existingEntry = if ($user) {Check-Existence $user,$userDomain} else {Check-Existence $grp,$groupDomain}
+
+            if ($existingEntry){
+                #this group has been processed before
+                $existingEntry.userRight.add($poname) |Out-Null
+                $existingEntry.source_of_right.add("self") | Out-Null
             }
+            else{
+
+                $final += [PSCustomObject]@{
+                    Domain = if ($user) { $userDomain } else { $groupDomain }
+                    Name = if ($user) { $user.Name } else { $grp.Name }
+                    SamAccountName = if ($user) { $user.SamAccountName } else { $grp.SamAccountName }
+                    ObjectClass = if ($user) { $user.ObjectClass } else { $grp.ObjectClass }
+                    MemberOf = if ($user) { Extract-GroupName $user.MemberOf -join ";" } else { Extract-GroupName $grp.MemberOf -join ";" }
+                    UserRight = [Collections.Generic.HashSet[string]]@($poname)
+                    LastLogonDate = if ($user.LastLogonDate) { $user.LastLogonDate } else { "Never" }
+                    AccountStatus = if ($user.Enabled) { If ($user.Enabled -eq 'True') { 'Active' } else { 'Disabled' } } else { "NA" }
+                    SourceOfRight = [Collections.Generic.HashSet[string]]@("self")
+                }
+
+            }
+
+
+
+
         }
 
         # Expand all the AD group members
@@ -129,18 +172,28 @@ foreach ($po in $fileContent) {
 
             foreach ($member in $members) {
                 $memberDomain = Extract-DomainFromDN $member.DistinguishedName
-
-                $final += [PSCustomObject]@{
-                    Domain = $memberDomain
-                    Name = $member.Name
-                    SamAccountName = $member.SamAccountName
-                    ObjectClass = $member.ObjectClass
-                    MemberOf = Extract-GroupName $member.MemberOf -join ";"
-                    UserRight = [Collections.Generic.HashSet[string]]@($poname)
-                    LastLogonDate = if ($member.LastLogonDate) { $member.LastLogonDate } else { "Never" }
-                    AccountStatus = if ($member.Enabled) { If ($member.Enabled -eq 'True') { 'Active' } else { 'Disabled' } } else { "NA" }
-                    SourceOfRight = [Collections.Generic.HashSet[string]]@($grp.SamAccountName)
+                $existingEntry = Check-Existence $member,$memberDomain
+                if ($existingEntry){
+                    #this group has been processed before
+                    $existingEntry.userRight.add($poname) |Out-Null
+                    $existingEntry.source_of_right.add("$($grp.Name)") | Out-Null
                 }
+                else{
+
+
+                    $final += [PSCustomObject]@{
+                        Domain = $memberDomain
+                        Name = $member.Name
+                        SamAccountName = $member.SamAccountName
+                        ObjectClass = $member.ObjectClass
+                        MemberOf = Extract-GroupName $member.MemberOf -join ";"
+                        UserRight = [Collections.Generic.HashSet[string]]@($poname)
+                        LastLogonDate = if ($member.LastLogonDate) { $member.LastLogonDate } else { "Never" }
+                        AccountStatus = if ($member.Enabled) { If ($member.Enabled -eq 'True') { 'Active' } else { 'Disabled' } } else { "NA" }
+                        SourceOfRight = [Collections.Generic.HashSet[string]]@($grp.SamAccountName)
+                    }
+                }
+
             }
         }
     }
