@@ -57,7 +57,7 @@ $DCs = Get-ADDomainController -Filter * | Where-Object {
     }
 }
 
-$fileContent = ""
+$fileContent = @()
 if ($DCs.Count -eq 0) {
     Write-Host "No reachable domain controllers found. Skipping security policy collection."
 } else {
@@ -73,7 +73,7 @@ if ($DCs.Count -eq 0) {
 
             # export security settings from each DC
             $fileContent += Invoke-Command -ComputerName $dc.HostName -ScriptBlock {
-                secedit /export /mergedpolicy /cfg "C:\Temp\SecuritySettings-$env:COMPUTERNAME.txt"
+                secedit /export /mergedpolicy /cfg "C:\Temp\SecuritySettings-$env:COMPUTERNAME.txt" | Out-Null
                 $data = Get-Content "C:\Temp\SecuritySettings-$env:COMPUTERNAME.txt"
                 rm "C:\Temp\SecuritySettings-$env:COMPUTERNAME.txt"
                 return $data
@@ -90,6 +90,7 @@ if ($DCs.Count -eq 0) {
 # $fileContent = foreach ($file in $files) { Get-Content $file.FullName -ErrorAction Stop }
 
 foreach ($po in $fileContent) {
+    
     if ($po -match "=") {
         $poname = ($po -split ' = ')[0]
         if ($poname[0] -ne 's' -or $poname[1] -ne 'e') { continue }
@@ -105,16 +106,16 @@ foreach ($po in $fileContent) {
         $groupDomain = @()
         foreach ($domain in $domains) {
             try {
-                # if (-not $user) {
+                if (-not $user) {
                     $user = Get-ADUser -Filter "SamAccountName -like '$ele'" -Server $domain -Properties Enabled,LastLogonDate,MemberOf,DistinguishedName -ErrorAction SilentlyContinue
                     if ($user) { $userDomain += Extract-DomainFromDN $user.DistinguishedName }
                     
-                # }
-                # if (-not $grp) {
+                }
+                if (-not $grp) {
                     $grp = Get-ADGroup -Filter "SamAccountName -like '$ele'" -Server $domain -Properties MemberOf,DistinguishedName -ErrorAction SilentlyContinue
                     if ($grp) { $groupDomain += Extract-DomainFromDN $grp.DistinguishedName }
                     
-                # }
+                }
             } catch {
                 Write-Host "Error retrieving AD object: $ele in domain: $domain - $_"
             }
@@ -137,24 +138,6 @@ foreach ($po in $fileContent) {
                 }
             }
         }
-        # else {
-
-        #     foreach ($domain in $domains) {
-        #         try {
-        #             if (-not $user) { 
-        #                 $user = Get-ADUser -Filter "SamAccountName -like '$ele'" -Server $domain -Properties Enabled,LastLogonDate,MemberOf,DistinguishedName -ErrorAction SilentlyContinue
-        #                 if ($user) { $userDomain = Extract-DomainFromDN $user.DistinguishedName }
-        #             }
-        #             if (-not $grp) {
-        #                 $grp = Get-ADGroup -Filter "SamAccountName -like '$ele'" -Server $domain -Properties MemberOf,DistinguishedName -ErrorAction SilentlyContinue
-        #                 if ($grp) { $groupDomain = Extract-DomainFromDN $grp.DistinguishedName }
-        #             }
-        #         } catch {
-        #             Write-Host "Error resolving SamAccountName for: $ele in domain: $domain - $_"
-        #         }
-        #     }
-        # }
-
 
         function Extract-GroupName {
             param ($dnList)
@@ -230,26 +213,21 @@ foreach ($po in $fileContent) {
             $members = @()
             foreach ($domain in $domains) {
                 try {
-                    # $members += (Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Server $domain -Recursive) |
-                    #             Where-Object { $_.ObjectClass -match "user" } |
-                    #             Get-ADUser -Server $domain -Properties MemberOf, Enabled, LastLogonDate, DistinguishedName -ErrorAction SilentlyContinue
+                    try{
+
+                    $members += (Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Server $domain -Recursive) |
+                                Where-Object { $_.ObjectClass -match "user" } |
+                                Get-ADUser -Server $domain -Properties MemberOf, Enabled, LastLogonDate, DistinguishedName 
+                    }
+                    catch{
                     $members += Get-GroupMemberRecursively $grp $domain
+                    }
+
                 } catch {
                     Write-Host "Error retrieving members for group: $($grp.SamAccountName) in domain: $domain - $_"
                 }
             }
-            # $members += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate
-            # $subgrp += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Properties SamAccountName
-            
-            # while ($subgrp){
-                
-            #     $tmp = $subgrp
-            #     $subgrp = @()
-            #     foreach ($m in $tmp) {
-            #         $members += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate
-            #         $subgrp += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Properties SamAccountName							
-            #     }
-            # }
+
             foreach ($member in $members) {
                 $memberDomain = Extract-DomainFromDN $member.DistinguishedName
                 $existingEntry = Check-Existence $member $memberDomain
