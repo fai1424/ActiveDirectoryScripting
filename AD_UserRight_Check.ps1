@@ -38,11 +38,36 @@ function Extract-DomainFromDN {
     return "Unknown"
 }
 
+# Export the security settings from all AD DCs
+$DCs = Get-ADDomainController -Filter * | Where-Object {
+    try {
+        Resolve-DnsName -Name $_.HostName -ErrorAction Stop
+        $true
+    } catch {
+        Write-Host "Skipping orphaned or unreachable domain controller: $($_.HostName)"
+        $failedDCs += $_.HostName
+        $false
+    }
+}
+
+if ($DCs.Count -eq 0) {
+    Write-Host "No reachable domain controllers found. Skipping security policy collection."
+} else {
+    foreach ($dc in $DCs) {
+        try {
+            Invoke-Command -ComputerName $dc.HostName -ScriptBlock {
+                secedit /export /mergedpolicy /cfg C:\Temp\SecuritySettings-$env:COMPUTERNAME.txt
+            } -ErrorAction Stop
+        } catch {
+            Write-Host "Failed to export security policies from: $($dc.HostName)"
+            $failedDCs += $dc.HostName
+        }
+    }
+}
+
 # Gather the security policies from all AD DCs
-secedit /export /mergedpolicy /cfg C:\Temp\SecuritySettings-1.txt
 $files = Get-ChildItem C:\Temp\SecuritySettings-*.txt -ErrorAction Stop
 $fileContent = foreach ($file in $files) { Get-Content $file.FullName -ErrorAction Stop }
-
 
 foreach ($po in $fileContent) {
     if ($po -match "=") {
