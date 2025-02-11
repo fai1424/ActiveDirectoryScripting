@@ -1,0 +1,881 @@
+﻿"Domain","Name","SamAccountName","ObjectClass","MemberOf","UserRight","LastLogonDate","AccountStatus","SourceOfRight"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","sebackupprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","sebackupprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","sebackupprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","sebackupprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","sebackupprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","sebackupprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","sebackupprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","Backup Operators","Backup Operators","group","No Groups
+","sebackupprivilege
+","Never","NA","self
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","sebackupprivilege
+","Never","Active","Backup Operators
+"
+"EastCharmer.local","test 5","test5","user","testgroup
+","sebackupprivilege
+","Never","Active","Backup Operators
+"
+"EastCharmer.local","testgroup","testgroup","group","Backup Operators
+Print Operators
+","sebackupprivilege
+","Never","NA","self
+"
+"EastCharmer.local","test 5","test5","user","testgroup
+","sebackupprivilege
+","Never","Active","testgroup
+"
+"EastCharmer.local","Server Operators","Server Operators","group","No Groups
+","sebackupprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","sebatchlogonright
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","sebatchlogonright
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","sebatchlogonright
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","sebatchlogonright
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","sebatchlogonright
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","sebatchlogonright
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","sebatchlogonright
+","Never","Active","Administrators
+"
+"EastCharmer.local","Backup Operators","Backup Operators","group","No Groups
+","sebatchlogonright
+","Never","NA","self
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","sebatchlogonright
+","Never","Active","Backup Operators
+"
+"EastCharmer.local","test 5","test5","user","testgroup
+","sebatchlogonright
+","Never","Active","Backup Operators
+"
+"EastCharmer.local","Performance Log Users","Performance Log Users","group","No Groups
+","sebatchlogonright
+","Never","NA","self
+"
+"EastCharmer.local","IIS_IUSRS","IIS_IUSRS","group","No Groups
+","sebatchlogonright
+","Never","NA","self
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","sechangenotifyprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","sechangenotifyprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","sechangenotifyprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","sechangenotifyprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","sechangenotifyprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","sechangenotifyprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","sechangenotifyprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","Pre-Windows 2000 Compatible Access","Pre-Windows 2000 Compatible Access","group","No Groups
+","sechangenotifyprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","secreatepagefileprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","secreatepagefileprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","secreatepagefileprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","secreatepagefileprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","secreatepagefileprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","secreatepagefileprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","secreatepagefileprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","sedebugprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","sedebugprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","sedebugprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","sedebugprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","sedebugprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","sedebugprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","sedebugprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","testgroup","testgroup","group","Backup Operators
+Print Operators
+","sedelegatesessionuserimpersonateprivilege
+","Never","NA","self
+"
+"EastCharmer.local","test 5","test5","user","testgroup
+","sedelegatesessionuserimpersonateprivilege
+","Never","Active","testgroup
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","seenabledelegationprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","seenabledelegationprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","seenabledelegationprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","seenabledelegationprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","seenabledelegationprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","seenabledelegationprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","seenabledelegationprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","seincreasebasepriorityprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","seincreasebasepriorityprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","seincreasebasepriorityprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","seincreasebasepriorityprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","seincreasebasepriorityprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","seincreasebasepriorityprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","seincreasebasepriorityprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","seincreasequotaprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","seincreasequotaprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","seincreasequotaprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","seincreasequotaprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","seincreasequotaprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","seincreasequotaprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","seincreasequotaprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","seinteractivelogonright
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","seinteractivelogonright
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","seinteractivelogonright
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","seinteractivelogonright
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","seinteractivelogonright
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","seinteractivelogonright
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","seinteractivelogonright
+","Never","Active","Administrators
+"
+"EastCharmer.local","Backup Operators","Backup Operators","group","No Groups
+","seinteractivelogonright
+","Never","NA","self
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","seinteractivelogonright
+","Never","Active","Backup Operators
+"
+"EastCharmer.local","test 5","test5","user","testgroup
+","seinteractivelogonright
+","Never","Active","Backup Operators
+"
+"EastCharmer.local","Account Operators","Account Operators","group","No Groups
+","seinteractivelogonright
+","Never","NA","self
+"
+"EastCharmer.local","Server Operators","Server Operators","group","No Groups
+","seinteractivelogonright
+","Never","NA","self
+"
+"EastCharmer.local","Print Operators","Print Operators","group","No Groups
+","seinteractivelogonright
+","Never","NA","self
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","seinteractivelogonright
+","Never","Active","Print Operators
+"
+"EastCharmer.local","test 5","test5","user","testgroup
+","seinteractivelogonright
+","Never","Active","Print Operators
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","seloaddriverprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","seloaddriverprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","seloaddriverprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","seloaddriverprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","seloaddriverprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","seloaddriverprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","seloaddriverprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","Print Operators","Print Operators","group","No Groups
+","seloaddriverprivilege
+","Never","NA","self
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","seloaddriverprivilege
+","Never","Active","Print Operators
+"
+"EastCharmer.local","test 5","test5","user","testgroup
+","seloaddriverprivilege
+","Never","Active","Print Operators
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","senetworklogonright
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","senetworklogonright
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","senetworklogonright
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","senetworklogonright
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","senetworklogonright
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","senetworklogonright
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","senetworklogonright
+","Never","Active","Administrators
+"
+"EastCharmer.local","Pre-Windows 2000 Compatible Access","Pre-Windows 2000 Compatible Access","group","No Groups
+","senetworklogonright
+","Never","NA","self
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","seprofilesingleprocessprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","seprofilesingleprocessprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","seprofilesingleprocessprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","seprofilesingleprocessprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","seprofilesingleprocessprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","seprofilesingleprocessprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","seprofilesingleprocessprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","seremoteshutdownprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","seremoteshutdownprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","seremoteshutdownprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","seremoteshutdownprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","seremoteshutdownprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","seremoteshutdownprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","seremoteshutdownprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","Server Operators","Server Operators","group","No Groups
+","seremoteshutdownprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","serestoreprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","serestoreprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","serestoreprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","serestoreprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","serestoreprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","serestoreprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","serestoreprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","Backup Operators","Backup Operators","group","No Groups
+","serestoreprivilege
+","Never","NA","self
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","serestoreprivilege
+","Never","Active","Backup Operators
+"
+"EastCharmer.local","test 5","test5","user","testgroup
+","serestoreprivilege
+","Never","Active","Backup Operators
+"
+"EastCharmer.local","Server Operators","Server Operators","group","No Groups
+","serestoreprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","sesecurityprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","sesecurityprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","sesecurityprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","sesecurityprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","sesecurityprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","sesecurityprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","sesecurityprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","seshutdownprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","seshutdownprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","seshutdownprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","seshutdownprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","seshutdownprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","seshutdownprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","seshutdownprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","Backup Operators","Backup Operators","group","No Groups
+","seshutdownprivilege
+","Never","NA","self
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","seshutdownprivilege
+","Never","Active","Backup Operators
+"
+"EastCharmer.local","test 5","test5","user","testgroup
+","seshutdownprivilege
+","Never","Active","Backup Operators
+"
+"EastCharmer.local","Server Operators","Server Operators","group","No Groups
+","seshutdownprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Print Operators","Print Operators","group","No Groups
+","seshutdownprivilege
+","Never","NA","self
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","seshutdownprivilege
+","Never","Active","Print Operators
+"
+"EastCharmer.local","test 5","test5","user","testgroup
+","seshutdownprivilege
+","Never","Active","Print Operators
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","sesystemenvironmentprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","sesystemenvironmentprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","sesystemenvironmentprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","sesystemenvironmentprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","sesystemenvironmentprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","sesystemenvironmentprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","sesystemenvironmentprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","sesystemprofileprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","sesystemprofileprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","sesystemprofileprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","sesystemprofileprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","sesystemprofileprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","sesystemprofileprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","sesystemprofileprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","sesystemtimeprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","sesystemtimeprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","sesystemtimeprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","sesystemtimeprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","sesystemtimeprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","sesystemtimeprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","sesystemtimeprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","Server Operators","Server Operators","group","No Groups
+","sesystemtimeprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","setakeownershipprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","setakeownershipprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","setakeownershipprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","setakeownershipprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","setakeownershipprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","setakeownershipprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","setakeownershipprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","Administrators","Administrators","group","No Groups
+","seundockprivilege
+","Never","NA","self
+"
+"EastCharmer.local","Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","seundockprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"EastCharmer.local","test 4","test4","user","Domain Admins
+Backup Operators
+","seundockprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 9","test9","user","recur
+","seundockprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","test 3","test3","user","recur
+Print Operators
+","seundockprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member","recurmemebr","user","recur 1
+","seundockprivilege
+","Never","Active","Administrators
+"
+"EastCharmer.local","recur member 2","recurmemeber2","user","recur 2
+","seundockprivilege
+","Never","Active","Administrators
+"

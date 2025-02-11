@@ -39,8 +39,10 @@ function Extract-DomainFromDN {
 }
 
 # Gather the security policies from all AD DCs
+secedit /export /mergedpolicy /cfg C:\Temp\SecuritySettings-1.txt
 $files = Get-ChildItem C:\Temp\SecuritySettings-*.txt -ErrorAction Stop
 $fileContent = foreach ($file in $files) { Get-Content $file.FullName -ErrorAction Stop }
+
 
 foreach ($po in $fileContent) {
     if ($po -match "=") {
