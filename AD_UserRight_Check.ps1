@@ -268,16 +268,16 @@ foreach ($po in $fileContent) {
             $members = @()
             $subgrp = @()
 
-            $members += (Get-ADGroup -Identity "$($identity.SamAccountName)" -Server $domain -Properties Member).Member |Get-ADObject -Server $domain|Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Server $domain -Properties MemberOf,Enabled,LastLogonDate
-            $subgrp += (Get-ADGroup -Identity "$($identity.SamAccountName)" -Server $domain -Properties Member).Member |Get-ADObject -Server $domain|Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Server $domain -Properties SamAccountName
+            $members += (Get-ADGroup -Identity "$($identity.SamAccountName)" -Server $domain -Properties Member).Member |Get-ADUser -Server $domain -Properties MemberOf,Enabled,LastLogonDate -ErrorAction SilentlyContinue
+            $subgrp += (Get-ADGroup -Identity "$($identity.SamAccountName)" -Server $domain -Properties Member).Member |Get-ADGroup -Server $domain -Properties SamAccountName -ErrorAction SilentlyContinue
             
             while ($subgrp){
                 
                 $tmp = $subgrp
                 $subgrp = @()
                 foreach ($m in $tmp) {
-                    $members += (Get-ADGroup -Identity "$($m.SamAccountName)" -Server $domain -Properties Member).Member |Get-ADObject -Server $domain |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Server $domain -Properties MemberOf,Enabled,LastLogonDate
-                    $subgrp += (Get-ADGroup -Identity "$($m.SamAccountName)" -Server $domain -Properties Member).Member |Get-ADObject -Server $domain |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Server $domain -Properties SamAccountName							
+                    $members += (Get-ADGroup -Identity "$($m.SamAccountName)" -Server $domain -Properties Member).Member |Get-ADUser -Server $domain -Properties MemberOf,Enabled,LastLogonDate -ErrorAction SilentlyContinue
+                    $subgrp += (Get-ADGroup -Identity "$($m.SamAccountName)" -Server $domain -Properties Member).Member |Get-ADGroup -Server $domain -Properties SamAccountName -ErrorAction SilentlyContinue							
                 }
             }
 
@@ -294,14 +294,14 @@ foreach ($po in $fileContent) {
 
                 # $domain = ($groups.domains[$i] | Out-String).Trim()
                 $members = @()
-                try{
-                    $members += (Get-ADGroupMember -Identity "$($groups.group[$i].SamAccountName)" -server $groups.domains[$i] -Recursive)|
-                    Where-Object { $_.ObjectClass -match "user" } |
-                    Get-ADUser -Server $groups.domains[$i] -Properties MemberOf, Enabled, LastLogonDate, DistinguishedName -ErrorAction SilentlyContinue
-                }
-                catch{
+                # try{
+                #     $members += (Get-ADGroupMember -Identity "$($groups.group[$i].SamAccountName)" -server $groups.domains[$i] -Recursive)|
+                #     Where-Object { $_.ObjectClass -match "user" } |
+                #     Get-ADUser -Server $groups.domains[$i] -Properties MemberOf, Enabled, LastLogonDate, DistinguishedName -ErrorAction SilentlyContinue
+                # }
+                # catch{
                     $members += Get-GroupMemberRecursively $groups.group[$i] $groups.domains[$i]
-                }
+                # }
                 foreach ($member in $members) {
                     $memberDomain = Extract-DomainFromDN $member.DistinguishedName
                     $existingEntry = Check-Existence $member $memberDomain
