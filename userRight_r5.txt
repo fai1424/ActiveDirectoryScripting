@@ -188,4 +188,4 @@ function getUserRights {
 }
 
 
-getUserRights | Out-Null
+getUserRights 2>$null | Out-Null

@@ -117,31 +117,32 @@ function getUserRights {
 					try{$members =(Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Recursive ) |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate
 						Get-ADUser "Idontknowwhatishappening"
 					}
-
 					catch{
+						
 						$members = @()
 						$subgrp = @()
-						$Member = (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member 
+						$Member = (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member
 						# Write-Host "$($grp.SamAccountName), this group has removed some user such that Get-ADGroupMember cannot be used, now use Get-ADGroup instead on this SID"
 						try{
 						# Write-Host $Member
+						
 						 $Member|ForEach-Object {
+							$identity = $_
 							try{
 								# Write-host "how many reached here"
 								# Write-Host (Get-ADUser -Identity "$_" -Properties MemberOf,Enabled,LastLogonDate)
-								$tmpMember = Get-ADUser -Identity "$_" -Properties MemberOf,Enabled,LastLogonDate
-								if ($tmpMember) {$members += $tmpMember}
+								$members += Get-ADUser -Identity "$identity" -Properties MemberOf,Enabled,LastLogonDate
+
 							}
 							catch{
+
 								try{
 
+									$subgrp += Get-ADGroup -Identity "$identity" -Properties SamAccountName
 								
-									$tmpgrp = Get-ADGroup -Identity "$_" -Properties SamAccountName
-									if ($tmpgrp) {$subgrp += $tmpgrp}
 									
 								}
 								catch{
-
 									# Write-Host $Error
 								continue}
 							}
@@ -156,14 +157,15 @@ function getUserRights {
 
 								$SubMember = (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member
 								$SubMember | ForEach-Object{
+
+									$identity = $_
 									try{
-										$tmpMember = Get-ADUser -Identity "$_" -Properties MemberOf,Enabled,LastLogonDate
-										if ($tmpMember){$members += $tmpMember}
+										$members+= Get-ADUser -Identity "$identity" -Properties MemberOf,Enabled,LastLogonDate
 									}
 									catch{
 										try{
-											$tmpgrp = Get-ADGroup -Identity "$_" -Properties SamAccountName
-											if ($tmpgrp) {$subgrp+=$tmpgrp}
+											$subgrp += Get-ADGroup -Identity "$identity" -Properties SamAccountName
+										
 										}
 										catch{
 									# Write-Host $Error
@@ -216,6 +218,7 @@ function getUserRights {
 	
 	#turn memberof and userRight and source_of_right from list/set to string for export
 	foreach ($f in $final){
+		Get-ADUser asdasd
 		$f.memberof = $f.memberof | Out-String
 		$f.userRight = $f.userRight | Out-String
 		$f.source_of_right = $f.source_of_right | Out-String
@@ -232,4 +235,4 @@ function getUserRights {
 }
 
 
-getUserRights | Out-Null
+getUserRights 2>$null | Out-Null
