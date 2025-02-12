@@ -114,23 +114,65 @@ function getUserRights {
 					}
 
 					#get all the users having the right of this group
-					try{$members = (Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Recursive ) |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate}
+					try{$members =(Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Recursive ) |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate
+						Get-ADUser "Idontknowwhatishappening"
+					}
+
 					catch{
 						$members = @()
 						$subgrp = @()
-
+						$Member = (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member 
 						# Write-Host "$($grp.SamAccountName), this group has removed some user such that Get-ADGroupMember cannot be used, now use Get-ADGroup instead on this SID"
 						try{
-						$members += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate
-						$subgrp += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Properties SamAccountName
+						# Write-Host $Member
+						 $Member|ForEach-Object {
+							try{
+								# Write-host "how many reached here"
+								# Write-Host (Get-ADUser -Identity "$_" -Properties MemberOf,Enabled,LastLogonDate)
+								$members+= Get-ADUser -Identity "$_" -Properties MemberOf,Enabled,LastLogonDate
+								Write-Host $members
+							}
+							catch{
+
+								try{
+
+								
+								
+									$subgrp += Get-ADGroup -Identity "$_" -Properties SamAccountName
+								}
+								catch{
+
+									# Write-Host $Error
+								continue}
+							}
+						}
+
 						
 						while ($subgrp){
 							
 							$tmp = $subgrp
 							$subgrp = @()
 							foreach ($m in $tmp) {
-								$members += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate
-								$subgrp += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Properties SamAccountName							
+
+								$SubMember = (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member
+								$SubMember | ForEach-Object{
+									try{
+										$members += Get-ADUser -Identity "$_" -Properties MemberOf,Enabled,LastLogonDate
+									}
+									catch{
+										try{
+											$subgrp += Get-ADGroup -Identity "$_" -Properties SamAccountName
+										}
+										catch{
+									# Write-Host $Error
+											continue}
+									}
+								}
+
+
+
+								# $members += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate -errorAction SilentlyContinue
+								# $subgrp += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member |Get-ADGroup -Properties SamAccountName -errorAction SilentlyContinue
 							}
 						}
 						}

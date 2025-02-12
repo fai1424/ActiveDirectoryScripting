@@ -286,28 +286,30 @@ foreach ($po in $fileContent) {
                                     if ($testobject){
                                         $members +=$testobject
                                     }
-                                    
+                                    Write-Host $eachMember
                                     $testobject= Get-ADGroup -Filter "DistinguishedName -like '$eachMember'" -Server $innerdomain -Properties SamAccountName,MemberOf -ErrorAction SilentlyContinue
+                                    Write-Host $testobject
                                     if ($testobject){
-
+                                        # Write-Host $testobject
                                         $existingEntry = Check-Existence $testobject $innerdomain
+                                        # Write-Host $existingEntry
                                         if ($existingEntry){
                                             $existingEntry.UserRight.add($poname) |Out-Null
                                             $existingEntry.SourceOfRight.add($identity.SamAccountName) | Out-Null
                                         }           
                                         else{
                                             # Write-Host $testobject.MemberOf
-                                            $final += [PSCustomObject]@{
-                                                Domain = $innerdomain
-                                                Name = $testobject.Name
-                                                SamAccountName = $testobject.SamAccountName
-                                                ObjectClass = $testobject.ObjectClass
-                                                MemberOf =  Extract-GroupName $testobject.MemberOf
-                                                UserRight = [Collections.Generic.HashSet[string]]@($poname)
-                                                LastLogonDate = "Never" 
-                                                AccountStatus =  "NA" 
-                                                SourceOfRight = [Collections.Generic.HashSet[string]]@($identity.SamAccountName)
-                                            }
+                                            # $final += [PSCustomObject]@{
+                                            #     Domain = $innerdomain
+                                            #     Name = $testobject.Name
+                                            #     SamAccountName = $testobject.SamAccountName
+                                            #     ObjectClass = $testobject.ObjectClass
+                                            #     MemberOf =  Extract-GroupName $testobject.MemberOf
+                                            #     UserRight = [Collections.Generic.HashSet[string]]@($poname)
+                                            #     LastLogonDate = "Never" 
+                                            #     AccountStatus =  "NA" 
+                                            #     SourceOfRight = [Collections.Generic.HashSet[string]]@($identity.SamAccountName)
+                                            # }
                             
                                         }
 
