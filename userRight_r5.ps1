@@ -112,7 +112,7 @@ function getUserRights {
 							source_of_right = [Collections.Generic.HashSet[string]]@("self")
 						}
 					}
-
+			
 					#get all the users having the right of this group
 					try{$members = (Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Recursive ) |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate}
 					catch{
@@ -135,7 +135,8 @@ function getUserRights {
 						}
 						}
 						catch{
-						Write-Warning "seems like FSP is not able to workaround with this as well, let's flag this group - $(($grp.SamAccountName)) - for further investigation."
+							continue
+						# Write-Warning "seems like FSP is not able to workaround with this as well, let's flag this group - $(($grp.SamAccountName)) - for further investigation."
 						}
 					
 					}
@@ -183,7 +184,6 @@ function getUserRights {
 	$output = "PrivilegedUserAccounts.csv"
 	$final | Export-Csv -Path $output -NoTypeInformation -Encoding UTF8
 	rm ".\securitysetting.txt"
-
 	return $final
 }
 

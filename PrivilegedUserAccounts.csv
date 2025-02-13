@@ -23,6 +23,158 @@ setakeownershipprivilege
 seundockprivilege
 ","NA","NA","self
 "
+"Administrator","Administrator","user","Group Policy Creator Owners
+Domain Admins
+Enterprise Admins
+Schema Admins
+Administrators
+","sebackupprivilege
+sebatchlogonright
+sechangenotifyprivilege
+secreatepagefileprivilege
+sedebugprivilege
+seenabledelegationprivilege
+seincreasebasepriorityprivilege
+seincreasequotaprivilege
+seinteractivelogonright
+seloaddriverprivilege
+senetworklogonright
+seprofilesingleprocessprivilege
+seremoteshutdownprivilege
+serestoreprivilege
+sesecurityprivilege
+seshutdownprivilege
+sesystemenvironmentprivilege
+sesystemprofileprivilege
+sesystemtimeprivilege
+setakeownershipprivilege
+seundockprivilege
+","2/2/2025 6:32:08 PM","Active","Administrators
+"
+"test 4","test4","user","Domain Admins
+Backup Operators
+","sebackupprivilege
+sebatchlogonright
+sechangenotifyprivilege
+secreatepagefileprivilege
+sedebugprivilege
+seenabledelegationprivilege
+seincreasebasepriorityprivilege
+seincreasequotaprivilege
+seinteractivelogonright
+seloaddriverprivilege
+senetworklogonright
+seprofilesingleprocessprivilege
+seremoteshutdownprivilege
+serestoreprivilege
+sesecurityprivilege
+seshutdownprivilege
+sesystemenvironmentprivilege
+sesystemprofileprivilege
+sesystemtimeprivilege
+setakeownershipprivilege
+seundockprivilege
+","Never","Active","Administrators
+Backup Operators
+"
+"test 9","test9","user","recur
+","sebackupprivilege
+sebatchlogonright
+sechangenotifyprivilege
+secreatepagefileprivilege
+sedebugprivilege
+seenabledelegationprivilege
+seincreasebasepriorityprivilege
+seincreasequotaprivilege
+seinteractivelogonright
+seloaddriverprivilege
+senetworklogonright
+seprofilesingleprocessprivilege
+seremoteshutdownprivilege
+serestoreprivilege
+sesecurityprivilege
+seshutdownprivilege
+sesystemenvironmentprivilege
+sesystemprofileprivilege
+sesystemtimeprivilege
+setakeownershipprivilege
+seundockprivilege
+","Never","Active","Administrators
+"
+"test 3","test3","user","recur
+Print Operators
+","sebackupprivilege
+sebatchlogonright
+sechangenotifyprivilege
+secreatepagefileprivilege
+sedebugprivilege
+seenabledelegationprivilege
+seincreasebasepriorityprivilege
+seincreasequotaprivilege
+seinteractivelogonright
+seloaddriverprivilege
+senetworklogonright
+seprofilesingleprocessprivilege
+seremoteshutdownprivilege
+serestoreprivilege
+sesecurityprivilege
+seshutdownprivilege
+sesystemenvironmentprivilege
+sesystemprofileprivilege
+sesystemtimeprivilege
+setakeownershipprivilege
+seundockprivilege
+","Never","Active","Administrators
+Print Operators
+"
+"recur member","recurmemebr","user","recur 1
+","sebackupprivilege
+sebatchlogonright
+sechangenotifyprivilege
+secreatepagefileprivilege
+sedebugprivilege
+seenabledelegationprivilege
+seincreasebasepriorityprivilege
+seincreasequotaprivilege
+seinteractivelogonright
+seloaddriverprivilege
+senetworklogonright
+seprofilesingleprocessprivilege
+seremoteshutdownprivilege
+serestoreprivilege
+sesecurityprivilege
+seshutdownprivilege
+sesystemenvironmentprivilege
+sesystemprofileprivilege
+sesystemtimeprivilege
+setakeownershipprivilege
+seundockprivilege
+","Never","Active","Administrators
+"
+"recur member 2","recurmemeber2","user","recur 2
+","sebackupprivilege
+sebatchlogonright
+sechangenotifyprivilege
+secreatepagefileprivilege
+sedebugprivilege
+seenabledelegationprivilege
+seincreasebasepriorityprivilege
+seincreasequotaprivilege
+seinteractivelogonright
+seloaddriverprivilege
+senetworklogonright
+seprofilesingleprocessprivilege
+seremoteshutdownprivilege
+serestoreprivilege
+sesecurityprivilege
+seshutdownprivilege
+sesystemenvironmentprivilege
+sesystemprofileprivilege
+sesystemtimeprivilege
+setakeownershipprivilege
+seundockprivilege
+","Never","Active","Administrators
+"
 "Backup Operators","Backup Operators","group","
 ","sebackupprivilege
 sebatchlogonright
@@ -30,15 +182,6 @@ seinteractivelogonright
 serestoreprivilege
 seshutdownprivilege
 ","NA","NA","self
-"
-"test 4","test4","user","Domain Admins
-Backup Operators
-","sebackupprivilege
-sebatchlogonright
-seinteractivelogonright
-serestoreprivilege
-seshutdownprivilege
-","Never","Active","Backup Operators
 "
 "test 5","test5","user","testgroup
 ","sebackupprivilege
@@ -89,11 +232,4 @@ senetworklogonright
 seloaddriverprivilege
 seshutdownprivilege
 ","NA","NA","self
-"
-"test 3","test3","user","recur
-Print Operators
-","seinteractivelogonright
-seloaddriverprivilege
-seshutdownprivilege
-","Never","Active","Print Operators
 "
