@@ -95,9 +95,9 @@ function getUserRights {
 
 				if ($grp){ #this element is a group
 					
-					# if ($grp.SamAccountName -eq "Administrators"){
+					if ($grp.SamAccountName -eq "Administrators"){
 						
-					# 	continue}
+						continue}
 					$existingEntry = $final|Where-Object {$_.SamAccountName -eq $grp.SamAccountName}
 					if ($existingEntry){
 						#this group has been processed before
@@ -126,16 +126,10 @@ function getUserRights {
 						# Write-Host "$($grp.SamAccountName), this group has removed some user such that Get-ADGroupMember cannot be used, now use Get-ADGroup instead on this SID"
 						try{
 							$members += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member | Foreach-Object{
-								try{
-									Get-ADUser -filter "DistinguishedName -like '$_'" -Properties MemberOf,Enabled,LastLogonDate -errorAction SilentlyContinue
-								}
-								catch{}
+								Get-ADUser -filter "DistinguishedName -like '$_'" -Properties MemberOf,Enabled,LastLogonDate -errorAction SilentlyContinue
 							}
 							$subgrp += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member | Foreach-Object{
-								try{
-									Get-ADGroup -filter "DistinguishedName -like '$_'" -Properties SamAccountName -errorAction SilentlyContinue
-								}
-								catch{}
+								Get-ADGroup -filter "DistinguishedName -like '$_'" -Properties SamAccountName -errorAction SilentlyContinue
 							}
 
 						while ($subgrp){
@@ -144,17 +138,10 @@ function getUserRights {
 							$subgrp = @()
 							foreach ($m in $tmp) {
 								$members += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member | Foreach-Object{
-									try{
-
-										Get-ADUser -filter "DistinguishedName -like '$_'" -Properties MemberOf,Enabled,LastLogonDate -errorAction SilentlyContinue
-									}
-									catch{}
+									Get-ADUser -filter "DistinguishedName -like '$_'" -Properties MemberOf,Enabled,LastLogonDate -errorAction SilentlyContinue
 								}
 								$subgrp += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member | Foreach-Object{
-									try{
-										Get-ADGroup -filter "DistinguishedName -like '$_'" -Properties SamAccountName -errorAction SilentlyContinue
-									}
-									catch{}
+									Get-ADGroup -filter "DistinguishedName -like '$_'" -Properties SamAccountName -errorAction SilentlyContinue
 								}					
 							}
 						}
