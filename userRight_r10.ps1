@@ -12,7 +12,6 @@ function getUserRights {
 	# export security setting 
 	secedit /export /mergedpolicy /cfg securitysetting.txt
 	$file = Get-Content securitysetting.txt		
-
 	
 
 	# extract privilege rights section
@@ -90,59 +89,15 @@ function getUserRights {
 					}
 					continue
 				}
-                function Get-GroupMemberRecursively {
-                    param($identity)
-                    $members = @()
-                    $subgrp = @()
-					
-                    $members += (Get-ADGroup -Identity "$identity" -Properties Member).Member |
-                    ForEach-Object {
-                        if ($_ -match "DC=([^,]+),DC=([^,]+)") {
-                           $domain = "$($matches[1]).$($matches[2])"
-                            Get-ADObject -Identity $_ -Server $domain -ErrorAction SilentlyContinue
-                            }
-                            } | Where-Object {$_.ObjectClass -match "user"} |
-                                Get-ADUser -Properties MemberOf,Enabled,LastLogonDate -ErrorAction SilentlyContinue
 
-                    $subgrp += (Get-ADGroup -Identity "$identity" -Properties Member).Member |
-                       ForEach-Object {
-                           if ($_ -match "DC=([^,]+),DC=([^,]+)") {
-                           $domain = "$($matches[1]).$($matches[2])"
-                           Get-ADObject -Identity $_ -Server $domain -ErrorAction SilentlyContinue
-                           }
-                       } | Where-Object {$_.ObjectClass -match "group"} |
-                       Get-ADGroup -Properties SamAccountName -ErrorAction SilentlyContinue
-                    
-                    while ($subgrp){
-                        $tmp = $subgrp
-                        $subgrp = @()
-                        foreach ($m in $tmp) {
-                            $members += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member |
-                            ForEach-Object {
-                                if ($_ -match "DC=([^,]+),DC=([^,]+)") {
-                                   $domain = "$($matches[1]).$($matches[2])"
-                                    Get-ADObject -Identity $_ -Server $domain -ErrorAction SilentlyContinue
-                                    }
-                                    } | Where-Object {$_.ObjectClass -match "user"} |
-                                        Get-ADUser -Properties MemberOf,Enabled,LastLogonDate -ErrorAction SilentlyContinue
-                                        
-                                   $subgrp += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member |
-                                        ForEach-Object {
-                                            if ($_ -match "DC=([^,]+),DC=([^,]+)") {
-                                            $domain = "$($matches[1]).$($matches[2])"
-                                            Get-ADObject -Identity $_ -Server $domain -ErrorAction SilentlyContinue
-                                            }
-                                        } | Where-Object {$_.ObjectClass -match "group"} |
-                                        Get-ADGroup -Properties SamAccountName -ErrorAction SilentlyContinue						
-                        }
-                    }
-        
-                    return $members
-                }
 
 				
 
 				if ($grp){ #this element is a group
+					
+					if ($grp.SamAccountName -eq "Administrators"){
+						
+						continue}
 					$existingEntry = $final|Where-Object {$_.SamAccountName -eq $grp.SamAccountName}
 					if ($existingEntry){
 						#this group has been processed before
@@ -161,14 +116,33 @@ function getUserRights {
 							source_of_right = [Collections.Generic.HashSet[string]]@("self")
 						}
 					}
-
+			
 					#get all the users having the right of this group
-					try{$members = (Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Recursive ) |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate
-                    Forcing it to go fault and go to 'catch' block by this line
-                
-                }
+					try{$members = (Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Recursive ) |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate}
 					catch{
-                        $members = Get-GroupMemberRecursively $grp.SamAccountName 
+						$members = @()
+						$subgrp = @()
+
+						# Write-Host "$($grp.SamAccountName), this group has removed some user such that Get-ADGroupMember cannot be used, now use Get-ADGroup instead on this SID"
+						try{
+						$members += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member | Get-ADUser -Properties MemberOf,Enabled,LastLogonDate -errorAction SilentlyContinue
+						$subgrp += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member|Get-ADGroup -Properties SamAccountName -errorAction SilentlyContinue
+						
+						while ($subgrp){
+							
+							$tmp = $subgrp
+							$subgrp = @()
+							foreach ($m in $tmp) {
+								$members += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate -errorAction SilentlyContinue
+								$subgrp += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member | Get-ADGroup -Properties SamAccountName -errorAction SilentlyContinue							
+							}
+						}
+						}
+						catch{
+							continue
+						# Write-Warning "seems like FSP is not able to workaround with this as well, let's flag this group - $(($grp.SamAccountName)) - for further investigation."
+						}
+					
 					}
 					
 					#third loop: to process the member of the group
@@ -214,7 +188,6 @@ function getUserRights {
 	$output = "PrivilegedUserAccounts.csv"
 	$final | Export-Csv -Path $output -NoTypeInformation -Encoding UTF8
 	rm ".\securitysetting.txt"
-
 	return $final
 }
 

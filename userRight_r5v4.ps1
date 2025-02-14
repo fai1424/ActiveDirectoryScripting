@@ -7,7 +7,7 @@ function getUserRights {
     # Write-Host "Sanity check: should have $(((Get-ADGroup 'Service Group Accounts' -Properties Member)).Member.count)"
 
     # export security setting 
-    secedit /export /mergedpolicy /cfg securitysetting.txt /InvalidParameter  # <-- This line will force an error
+    secedit /export /mergedpolicy /cfg securitysetting.txt  # <-- This line will force an error
     $file = Get-Content securitysetting.txt
 
     # extract privilege rights section
@@ -97,7 +97,7 @@ function getUserRights {
                 }
 				#get all the users having the right of this group
                 try {
-                    $members = (Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Recursive) | Where-Object { $_.ObjectClass -match "user" } | Get-ADUser -Properties MemberOf, Enabled, LastLogonDate
+                    $members = a(Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Recursive) | Where-Object { $_.ObjectClass -match "user" } | Get-ADUser -Properties MemberOf, Enabled, LastLogonDate
                 } catch {
                     $members = @()
                     $subgrp = @()

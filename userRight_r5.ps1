@@ -94,7 +94,10 @@ function getUserRights {
 				
 
 				if ($grp){ #this element is a group
-					if ($grp.SamAccountName -eq "Administrator"){continue}
+					
+					if ($grp.SamAccountName -eq "Administrators"){
+						
+						continue}
 					$existingEntry = $final|Where-Object {$_.SamAccountName -eq $grp.SamAccountName}
 					if ($existingEntry){
 						#this group has been processed before
@@ -115,7 +118,7 @@ function getUserRights {
 					}
 			
 					#get all the users having the right of this group
-					try{$members = (Get-ADGroupMember -Identity "$($grp.SamAccountName)" -Recursive ) |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate}
+					try{$members = (aGet-ADGroupMember -Identity "$($grp.SamAccountName)" -Recursive ) |Where-Object {$_.ObjectClass -match "user"} |Get-ADUser -Properties MemberOf,Enabled,LastLogonDate}
 					catch{
 						$members = @()
 						$subgrp = @()
