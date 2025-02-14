@@ -1,0 +1,7 @@
+Get-ADUser : Cannot find an object with identity: 'asjdoisajdoisad' under: 'DC=EastCharmer,DC=local'.
+At line:1 char:1
++ Get-ADUser asjdoisajdoisad -ErrorAction silentlycontinue
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (asjdoisajdoisad:ADUser) [Get-ADUser], ADIdentityNotFoundException
+    + FullyQualifiedErrorId : ActiveDirectoryCmdlet:Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException,M
+   icrosoft.ActiveDirectory.Management.Commands.GetADUser
