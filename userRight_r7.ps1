@@ -125,41 +125,40 @@ function getUserRights {
 						#$subgrp += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member |Get-ADObject |Where-Object {$_.ObjectClass -match "group"} |Get-ADGroup -Properties SamAccountName
 						$members += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member |
             						ForEach-Object {
-                						if ($_.DistinguishedName -match "DC=([^,]+),DC=([^,]+)") {
+                						if ($_ -match "DC=([^,]+),DC=([^,]+)") {
                    						$domain = "$($matches[1]).$($matches[2])"
-                    						Get-ADObject -Identity $_.DistinguishedName -Server $domain -ErrorAction SilentlyContinue
+                    						Get-ADObject -Identity $_ -Server $domain -ErrorAction SilentlyContinue
               							  }
             								} | Where-Object {$_.ObjectClass -match "user"} |
            									 Get-ADUser -Properties MemberOf,Enabled,LastLogonDate -ErrorAction SilentlyContinue
 
 						$subgrp += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member |
            							ForEach-Object {
-              							 if ($_.DistinguishedName -match "DC=([^,]+),DC=([^,]+)") {
+              							 if ($_ -match "DC=([^,]+),DC=([^,]+)") {
                  						  $domain = "$($matches[1]).$($matches[2])"
-                  						 Get-ADObject -Identity $_.DistinguishedName -Server $domain -ErrorAction SilentlyContinue
+                  						 Get-ADObject -Identity $_ -Server $domain -ErrorAction SilentlyContinue
               							 }
          							  } | Where-Object {$_.ObjectClass -match "group"} |
          							  Get-ADGroup -Properties SamAccountName -ErrorAction SilentlyContinue
 
 						while ($subgrp){
-							
 							$tmp = $subgrp
 							$subgrp = @()
 							foreach ($m in $tmp) {
                                 $members += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member |
                                 ForEach-Object {
-                                    if ($_.DistinguishedName -match "DC=([^,]+),DC=([^,]+)") {
+                                    if ($_ -match "DC=([^,]+),DC=([^,]+)") {
                                        $domain = "$($matches[1]).$($matches[2])"
-                                        Get-ADObject -Identity $_.DistinguishedName -Server $domain -ErrorAction SilentlyContinue
+                                        Get-ADObject -Identity $_ -Server $domain -ErrorAction SilentlyContinue
                                         }
                                         } | Where-Object {$_.ObjectClass -match "user"} |
                                             Get-ADUser -Properties MemberOf,Enabled,LastLogonDate -ErrorAction SilentlyContinue
                                             
-                                       $subgrp += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member |
+                                       $subgrp += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member |
                                             ForEach-Object {
-                                                if ($_.DistinguishedName -match "DC=([^,]+),DC=([^,]+)") {
+                                                if ($_ -match "DC=([^,]+),DC=([^,]+)") {
                                                 $domain = "$($matches[1]).$($matches[2])"
-                                                Get-ADObject -Identity $_.DistinguishedName -Server $domain -ErrorAction SilentlyContinue
+                                                Get-ADObject -Identity $_ -Server $domain -ErrorAction SilentlyContinue
                                                 }
                                             } | Where-Object {$_.ObjectClass -match "group"} |
                                             Get-ADGroup -Properties SamAccountName -ErrorAction SilentlyContinue						
