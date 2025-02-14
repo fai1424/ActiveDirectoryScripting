@@ -126,10 +126,17 @@ function getUserRights {
 						# Write-Host "$($grp.SamAccountName), this group has removed some user such that Get-ADGroupMember cannot be used, now use Get-ADGroup instead on this SID"
 						try{
 							$members += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member | Foreach-Object{
-								Get-ADUser -filter "DistinguishedName -like '$_'" -Properties MemberOf,Enabled,LastLogonDate -errorAction SilentlyContinue
+								try{
+									Get-ADUser -filter "DistinguishedName -like '$_'" -Properties MemberOf,Enabled,LastLogonDate -errorAction SilentlyContinue
+								}
+								catch{}
 							}
 							$subgrp += (Get-ADGroup -Identity "$($grp.SamAccountName)" -Properties Member).Member | Foreach-Object{
-								Get-ADGroup -filter "DistinguishedName -like '$_'" -Properties SamAccountName -errorAction SilentlyContinue
+								try{
+
+									Get-ADGroup -filter "DistinguishedName -like '$_'" -Properties SamAccountName -errorAction SilentlyContinue
+								}
+								catch{}
 							}
 
 						while ($subgrp){
@@ -138,10 +145,17 @@ function getUserRights {
 							$subgrp = @()
 							foreach ($m in $tmp) {
 								$members += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member | Foreach-Object{
-									Get-ADUser -filter "DistinguishedName -like '$_'" -Properties MemberOf,Enabled,LastLogonDate -errorAction SilentlyContinue
+									try{
+
+										Get-ADUser -filter "DistinguishedName -like '$_'" -Properties MemberOf,Enabled,LastLogonDate -errorAction SilentlyContinue
+									}
+									catch{}
 								}
 								$subgrp += (Get-ADGroup -Identity "$($m.SamAccountName)" -Properties Member).Member | Foreach-Object{
-									Get-ADGroup -filter "DistinguishedName -like '$_'" -Properties SamAccountName -errorAction SilentlyContinue
+									try{
+										Get-ADGroup -filter "DistinguishedName -like '$_'" -Properties SamAccountName -errorAction SilentlyContinue
+									}
+									catch{}
 								}					
 							}
 						}
